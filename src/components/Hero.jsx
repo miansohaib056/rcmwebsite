@@ -142,7 +142,7 @@ function HeroDashboard() {
       <motion.div
         whileHover={{ rotateY: -4, rotateX: 4 }}
         transition={{ type: 'spring', stiffness: 120, damping: 18 }}
-        className="relative glass-strong rounded-3xl p-5 shadow-[0_30px_80px_-30px_rgba(34,211,238,0.4)] preserve-3d"
+        className="relative glass-strong rounded-3xl p-5 shadow-[0_30px_80px_-30px_rgba(34,211,238,0.4)] preserve-3d gpu"
       >
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
@@ -224,7 +224,7 @@ function HeroDashboard() {
       <motion.div
         animate={{ y: [0, -10, 0] }}
         transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute -top-6 -left-6 glass rounded-2xl px-3 py-2 flex items-center gap-2 shadow-glow"
+        className="absolute -top-6 -left-6 glass rounded-2xl px-3 py-2 flex items-center gap-2 shadow-glow gpu"
       >
         <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-500 grid place-items-center">
           <CheckCircle2 className="w-4 h-4 text-white" />
@@ -238,7 +238,7 @@ function HeroDashboard() {
       <motion.div
         animate={{ y: [0, 10, 0] }}
         transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
-        className="absolute -bottom-6 -right-4 glass rounded-2xl px-3 py-2 flex items-center gap-2 shadow-glow-violet"
+        className="absolute -bottom-6 -right-4 glass rounded-2xl px-3 py-2 flex items-center gap-2 shadow-glow-violet gpu"
       >
         <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 grid place-items-center">
           <Sparkles className="w-4 h-4 text-white" />

@@ -55,7 +55,7 @@ export default function Showcase() {
         <div className="relative mt-14 mx-auto max-w-5xl perspective-1000">
           <motion.div
             style={{ rotate, y: y1 }}
-            className="relative aspect-[16/10] glass-strong rounded-[2rem] p-6 md:p-10 shadow-[0_60px_120px_-40px_rgba(34,211,238,0.35)]"
+            className="relative aspect-[16/10] glass-strong rounded-[2rem] p-6 md:p-10 shadow-[0_60px_120px_-40px_rgba(34,211,238,0.35)] gpu"
           >
             {/* concentric rings */}
             <div className="absolute inset-0 grid place-items-center pointer-events-none">

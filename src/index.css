@@ -19,7 +19,12 @@
       radial-gradient(ellipse 50% 40% at 80% 10%, rgba(139, 92, 246, 0.18), transparent 60%),
       radial-gradient(ellipse 80% 60% at 50% 100%, rgba(34, 211, 238, 0.10), transparent 60%);
     background-attachment: fixed;
-    overflow-x: hidden;
+    /* `clip` (not hidden) — `clip` does NOT create a scroll container, so descendant
+       position:sticky elements still work against the viewport. */
+    overflow-x: clip;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
   }
 
   ::selection {
@@ -83,15 +88,18 @@
     box-shadow:
       0 18px 40px -10px rgba(139, 92, 246, 0.55),
       inset 0 1px 0 0 rgba(255, 255, 255, 0.35);
-    transform: translateY(-2px);
-    transition: all 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translate3d(0, -2px, 0);
+    transition: background-position 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      box-shadow 0.4s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform, background-position;
   }
   .btn-primary:hover {
     background-position: 0% 50%;
     box-shadow:
       0 10px 30px -10px rgba(34, 211, 238, 0.5),
       inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 
   .btn-ghost {
@@ -99,7 +107,7 @@
     background: rgba(255, 255, 255, 0.08);
     border: 1px solid rgba(34, 211, 238, 0.4);
     backdrop-filter: blur(10px);
-    transition: all 0.3s ease;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
   }
   .btn-ghost:hover {
     background: rgba(255, 255, 255, 0.04);
@@ -162,7 +170,8 @@
     -webkit-mask-image: linear-gradient(90deg, transparent, black 12%, black 88%, transparent);
   }
 
-  .testimonial-track::-webkit-scrollbar {
+  .testimonial-track::-webkit-scrollbar,
+  .problems-track::-webkit-scrollbar {
     display: none;
   }
 
@@ -177,6 +186,20 @@
   }
   .preserve-3d {
     transform-style: preserve-3d;
+  }
+
+  /* Promote to its own composite layer — keeps animations off the main thread. */
+  .gpu {
+    transform: translateZ(0);
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform;
+  }
+
+  /* Tell the browser it can skip rendering when this element is out of view. */
+  .cv-auto {
+    content-visibility: auto;
+    contain-intrinsic-size: 1px 800px;
   }
 
   @media (prefers-reduced-motion: reduce) {
