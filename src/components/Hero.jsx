@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { ArrowRight, ShieldCheck, CheckCircle2, Activity, Sparkles, Zap } from 'lucide-react';
-import ParticleField from './ParticleField';
+import CircuitBackground from './CircuitBackground';
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -18,8 +18,7 @@ export default function Hero() {
       className="relative isolate min-h-[92svh] flex items-center pt-24 pb-10 md:pt-28 md:pb-16 overflow-hidden"
     >
       {/* Background layers */}
-      <div className="absolute inset-0 grid-bg" />
-      <ParticleField />
+      <CircuitBackground />
       <div className="pointer-events-none absolute -top-32 left-1/2 -translate-x-1/2 w-[1200px] h-[600px] bg-hero-glow blur-2xl" />
       <div className="pointer-events-none absolute top-1/3 -left-32 w-[420px] h-[420px] rounded-full bg-cyan-500/15 blur-[90px]" />
       <div className="pointer-events-none absolute bottom-0 -right-24 w-[480px] h-[480px] rounded-full bg-violet-500/15 blur-[90px]" />
