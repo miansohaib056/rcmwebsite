@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
-import { ArrowRight, ShieldCheck, CheckCircle2, Activity, Sparkles, Zap } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useEffect, useRef, useState } from 'react';
+import { ArrowRight, ShieldCheck, CheckCircle2, Activity, Sparkles, Zap, Check, DollarSign, Search, Send, CircleDot } from 'lucide-react';
 import CircuitBackground from './CircuitBackground';
 
 const fadeUp = {
@@ -129,124 +130,233 @@ export default function Hero() {
   );
 }
 
+const STAGES = [
+  { label: 'Eligibility', icon: CheckCircle2 },
+  { label: 'Coding', icon: CheckCircle2 },
+  { label: 'Scrub', icon: Search },
+  { label: 'Submit', icon: Send },
+  { label: 'Paid', icon: DollarSign },
+];
+
+const ACTIVITY_ENTRIES = [
+  { cls: 'text-cyan-400 bg-cyan-400/10', tag: 'ELIG', text: 'Eligibility verified', code: 'BCBS-IL', desc: 'copay $30', time: '12s ago' },
+  { cls: 'text-cyan-400 bg-cyan-400/10', tag: 'COD', text: 'CODIN', code: '99214 + E11.9', desc: 'proposed', time: '8s ago' },
+  { cls: 'text-cyan-400 bg-cyan-400/10', tag: 'COD', text: 'CODIN', code: '-25', desc: 'modifier applied', time: '7s ago' },
+  { cls: 'text-amber-400 bg-amber-400/10', tag: 'SCR', text: 'Scrubber', code: 'passed', desc: 'NCCI pair check', time: '4s ago' },
+  { cls: 'text-amber-400 bg-amber-400/10', tag: 'SCR', text: 'Scrubber', code: 'BCBS-IL ok', desc: 'payer LCD', time: '3s ago' },
+  { cls: 'text-amber-400 bg-amber-400/10', tag: 'SCR', text: 'Scrubber', code: '96 / 100', desc: 'risk score', time: '2s ago' },
+  { cls: 'text-rose-400 bg-rose-400/10', tag: 'CLA', text: 'CLAIR', code: 'CARC-197', desc: 'queuing appeal', time: 'now' },
+];
+
 function HeroDashboard() {
+  const [activeStage, setActiveStage] = useState(2);
+  const [visibleEntries, setVisibleEntries] = useState([]);
+  const [riskScore, setRiskScore] = useState(96);
+  const cursorRef = useRef(5);
+
+  useEffect(() => {
+    const initial = ACTIVITY_ENTRIES.slice(0, 5);
+    initial.forEach((entry, i) => {
+      setTimeout(() => {
+        setVisibleEntries((prev) => [...prev.slice(-4), { ...entry, id: i }]);
+      }, 1400 + i * 220);
+    });
+
+    const interval = setInterval(() => {
+      const entry = ACTIVITY_ENTRIES[cursorRef.current % ACTIVITY_ENTRIES.length];
+      setVisibleEntries((prev) => [...prev.slice(-4), { ...entry, time: 'now', id: Date.now() }]);
+      cursorRef.current++;
+    }, 3200);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveStage((prev) => {
+        if (prev < STAGES.length - 1) return prev + 1;
+        setTimeout(() => setActiveStage(2), 1800);
+        return prev;
+      });
+    }, 2800);
+    return () => clearInterval(interval);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setRiskScore(96 - Math.floor(Math.random() * 3));
+    }, 1800);
+    return () => clearInterval(interval);
+  }, []);
+
+  const progressWidth = `${(activeStage / (STAGES.length - 1)) * 100}%`;
+
   return (
-    <div className="relative perspective-1000">
-      {/* Floating orbital ring */}
-      <div className="absolute -inset-10 -z-10 opacity-60">
-        <div className="absolute inset-0 rounded-full ring-gradient blur-3xl opacity-30 animate-spin-slow" />
-      </div>
+    <div className="relative" style={{ minHeight: 520 }}>
+      {/* Decorative grid behind */}
+      <div
+        className="absolute -inset-10 opacity-40 pointer-events-none"
+        style={{
+          backgroundImage: 'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
+          backgroundSize: '32px 32px',
+          maskImage: 'radial-gradient(ellipse at center, black 30%, transparent 70%)',
+          WebkitMaskImage: 'radial-gradient(ellipse at center, black 30%, transparent 70%)',
+        }}
+      />
 
-      {/* Main card */}
+      {/* Floating: Risk score card */}
       <motion.div
-        whileHover={{ rotateY: -4, rotateX: 4 }}
-        transition={{ type: 'spring', stiffness: 120, damping: 18 }}
-        className="relative glass-strong rounded-3xl p-5 shadow-[0_30px_80px_-30px_rgba(34,211,238,0.4)] preserve-3d gpu"
+        initial={{ opacity: 0, y: 14, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.7, delay: 1.1, ease: [0.2, 0.7, 0.2, 1] }}
+        className="absolute -top-2 -right-4 z-10 glass rounded-xl p-3.5 shadow-lg border border-white/10 w-[168px]"
       >
-        <div className="flex items-center justify-between mb-4">
-          <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-rose-400/80" />
-            <span className="w-2.5 h-2.5 rounded-full bg-amber-300/80" />
-            <span className="w-2.5 h-2.5 rounded-full bg-emerald-400/80" />
-          </div>
-          <div className="flex items-center gap-2 text-[11px] text-slate-400">
-            <Activity className="w-3.5 h-3.5 text-emerald-300 animate-pulse" />
-            Live activity
-          </div>
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-[10px] uppercase tracking-[0.08em] text-slate-400 font-medium">Risk score</span>
+          <span className="text-[9px] font-mono text-amber-400 bg-amber-400/10 px-1.5 py-0.5 rounded">Scrubber</span>
         </div>
-
-        <div className="flex items-baseline justify-between">
-          <div>
-            <div className="text-[11px] uppercase tracking-widest text-slate-400">
-              Clean claim rate
-            </div>
-            <div className="font-display text-4xl font-bold text-white mt-1">
-              99.<span className="text-gradient-cv">99%</span>
-            </div>
-          </div>
-          <div className="text-right">
-            <div className="text-[11px] uppercase tracking-widest text-slate-400">Today</div>
-            <div className="text-emerald-300 text-sm font-medium">+12.4%</div>
-          </div>
+        <div className="flex items-baseline gap-1 mb-2">
+          <span className="text-3xl font-semibold text-white tracking-tight">{riskScore}</span>
+          <span className="text-xs font-mono text-slate-500">/ 100</span>
         </div>
-
-        {/* Sparkline */}
-        <svg viewBox="0 0 400 120" className="mt-3 w-full h-28">
-          <defs>
-            <linearGradient id="hg" x1="0" x2="0" y1="0" y2="1">
-              <stop offset="0" stopColor="#22d3ee" stopOpacity="0.55" />
-              <stop offset="1" stopColor="#22d3ee" stopOpacity="0" />
-            </linearGradient>
-            <linearGradient id="hgline" x1="0" x2="1">
-              <stop offset="0" stopColor="#22d3ee" />
-              <stop offset="1" stopColor="#a855f7" />
-            </linearGradient>
-          </defs>
-          <motion.path
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 2, ease: 'easeInOut', delay: 0.6 }}
-            d="M0 90 L40 78 L80 84 L120 60 L160 66 L200 42 L240 50 L280 28 L320 36 L360 18 L400 22 L400 120 L0 120 Z"
-            fill="url(#hg)"
-            stroke="none"
+        <div className="h-[5px] bg-white/5 rounded-full overflow-hidden mb-2">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: '96%' }}
+            transition={{ duration: 2.4, delay: 1.6, ease: [0.2, 0.7, 0.2, 1] }}
+            className="h-full bg-gradient-to-r from-cyan-400 to-cyan-500 rounded-full"
           />
-          <motion.path
-            initial={{ pathLength: 0 }}
-            animate={{ pathLength: 1 }}
-            transition={{ duration: 2, ease: 'easeInOut', delay: 0.6 }}
-            d="M0 90 L40 78 L80 84 L120 60 L160 66 L200 42 L240 50 L280 28 L320 36 L360 18 L400 22"
-            fill="none"
-            stroke="url(#hgline)"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        </div>
+        <div className="flex items-center gap-1.5 text-[11px] text-cyan-400">
+          <span className="w-[5px] h-[5px] rounded-full bg-cyan-400" />
+          Clean — auto-submit
+        </div>
+      </motion.div>
 
-        {/* Mini stats grid */}
-        <div className="grid grid-cols-3 gap-2 mt-2">
+      {/* Floating: Code set card */}
+      <motion.div
+        initial={{ opacity: 0, y: 14, scale: 0.96 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.7, delay: 1.3, ease: [0.2, 0.7, 0.2, 1] }}
+        className="absolute bottom-6 -left-7 z-10 glass rounded-xl p-3.5 shadow-lg border border-white/10 w-[200px]"
+      >
+        <div className="flex items-center justify-between mb-2.5">
+          <span className="text-[10px] uppercase tracking-[0.08em] text-slate-400 font-medium">Code set</span>
+          <span className="text-[9px] font-mono text-cyan-400 bg-cyan-400/10 px-1.5 py-0.5 rounded">CODIN</span>
+        </div>
+        <div className="flex flex-col gap-[7px]">
           {[
-            { l: 'Eligibility', v: '4,812', d: 'verified' },
-            { l: 'Prior Auth', v: '312', d: 'approved' },
-            { l: 'Denials', v: '0', d: 'predicted' },
-          ].map((s) => (
-            <div key={s.l} className="rounded-xl bg-white/[0.03] border border-white/5 p-3">
-              <div className="text-[10px] text-slate-400 uppercase tracking-wider">{s.l}</div>
-              <div className="text-white text-lg font-semibold mt-0.5">{s.v}</div>
-              <div className="text-[10px] text-cyan-300">{s.d}</div>
+            { k: 'CPT', v: '99214' },
+            { k: 'ICD-10', v: 'E11.9' },
+            { k: 'ICD-10', v: 'I10' },
+            { k: 'Modifier', v: '-25' },
+          ].map((row) => (
+            <div key={row.v} className="flex justify-between items-center font-mono text-[11.5px]">
+              <span className="text-slate-500">{row.k}</span>
+              <span className="text-white font-medium flex items-center gap-1.5">
+                {row.v}
+                <span className="w-3 h-3 rounded-full bg-cyan-400 text-white grid place-items-center text-[7px] font-bold">✓</span>
+              </span>
             </div>
           ))}
         </div>
       </motion.div>
 
-      {/* Floating chips */}
-      <motion.div
-        animate={{ y: [0, -10, 0] }}
-        transition={{ duration: 5, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute -top-6 -left-6 glass rounded-2xl px-3 py-2 flex items-center gap-2 shadow-glow gpu"
-      >
-        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-cyan-400 to-blue-500 grid place-items-center">
-          <CheckCircle2 className="w-4 h-4 text-white" />
+      {/* Main encounter card */}
+      <div className="relative z-[2] glass-strong rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-white/[0.02]">
+          <div className="flex items-center gap-2.5 text-[13px] text-slate-300">
+            <span className="font-mono text-[12px] text-white bg-white/10 px-2 py-0.5 rounded">PT-83491</span>
+            <span>Established · Internal Med · 22 min</span>
+          </div>
+          <div className="flex items-center gap-1.5 text-[11px] text-cyan-400 font-medium uppercase tracking-[0.04em]">
+            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+            Live
+          </div>
         </div>
-        <div>
-          <div className="text-[10px] text-slate-400">CODIN</div>
-          <div className="text-xs text-white font-medium">CPT 99214 verified</div>
-        </div>
-      </motion.div>
 
-      <motion.div
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut', delay: 0.6 }}
-        className="absolute -bottom-6 -right-4 glass rounded-2xl px-3 py-2 flex items-center gap-2 shadow-glow-violet gpu"
-      >
-        <div className="w-7 h-7 rounded-lg bg-gradient-to-br from-violet-500 to-fuchsia-500 grid place-items-center">
-          <Sparkles className="w-4 h-4 text-white" />
+        {/* Pipeline stages */}
+        <div className="relative px-4 py-5">
+          {/* Progress line */}
+          <div className="absolute top-[34px] left-[12%] right-[12%] h-[1.5px] bg-white/10" />
+          <motion.div
+            className="absolute top-[34px] left-[12%] h-[1.5px] bg-cyan-400"
+            animate={{ width: progressWidth }}
+            transition={{ duration: 0.8, ease: [0.2, 0.7, 0.2, 1] }}
+            style={{ maxWidth: '76%' }}
+          />
+
+          <div className="grid grid-cols-5 relative z-[1]">
+            {STAGES.map((stage, i) => {
+              const done = i < activeStage;
+              const active = i === activeStage;
+              const Icon = stage.icon;
+              return (
+                <div key={stage.label} className="flex flex-col items-center gap-2">
+                  <div
+                    className={`w-7 h-7 rounded-full grid place-items-center border-[1.5px] transition-all duration-400 ${
+                      done
+                        ? 'bg-cyan-400 border-cyan-400 text-white'
+                        : active
+                          ? 'bg-transparent border-cyan-400 text-cyan-400 shadow-[0_0_0_3px_rgba(34,211,238,0.15)]'
+                          : 'bg-white/5 border-white/15 text-slate-500'
+                    }`}
+                  >
+                    {done ? (
+                      <Check className="w-3.5 h-3.5" strokeWidth={3} />
+                    ) : (
+                      <Icon className="w-3.5 h-3.5" />
+                    )}
+                  </div>
+                  <span
+                    className={`text-[10.5px] font-medium uppercase tracking-[0.02em] transition-colors ${
+                      done || active ? 'text-white' : 'text-slate-500'
+                    }`}
+                  >
+                    {stage.label}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
-        <div>
-          <div className="text-[10px] text-slate-400">PRIA</div>
-          <div className="text-xs text-white font-medium">Auth approved · 2.1s</div>
+
+        {/* Activity log */}
+        <div className="px-4 pb-4">
+          <div className="border-t border-white/10 pt-3">
+            <div className="flex justify-between items-center mb-3">
+              <span className="text-[11px] uppercase tracking-[0.08em] text-slate-500 font-medium">Agent activity</span>
+              <span className="text-[11px] font-mono text-slate-500 tracking-tight">last 60s</span>
+            </div>
+            <div className="flex flex-col gap-2 min-h-[130px]">
+              <AnimatePresence initial={false}>
+                {visibleEntries.map((entry) => (
+                  <motion.div
+                    key={entry.id}
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -4 }}
+                    transition={{ duration: 0.35 }}
+                    className="grid items-center gap-2.5 text-[12.5px] text-slate-300"
+                    style={{ gridTemplateColumns: '22px 1fr auto' }}
+                  >
+                    <span className={`w-[22px] h-[22px] rounded-[5px] grid place-items-center font-mono text-[9px] font-medium ${entry.cls}`}>
+                      {entry.tag}
+                    </span>
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="text-white font-medium">{entry.text}</span>
+                      <span className="text-slate-500">{entry.desc}</span>
+                      <span className="font-mono text-[11px] text-slate-400 bg-white/5 px-1.5 py-px rounded">{entry.code}</span>
+                    </div>
+                    <span className="font-mono text-[10.5px] text-slate-600 tracking-tight">{entry.time}</span>
+                  </motion.div>
+                ))}
+              </AnimatePresence>
+            </div>
+          </div>
         </div>
-      </motion.div>
+      </div>
     </div>
   );
 }
