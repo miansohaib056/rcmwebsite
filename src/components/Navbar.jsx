@@ -11,11 +11,8 @@ const links = [
 ];
 
 const versions = [
-  { label: 'V1 — Original', href: '/', desc: 'Encounter card hero' },
-  { label: 'V2 — Live Claim Conveyor', href: '/v2', desc: 'Claims flow through 7 agent stations' },
-  { label: 'V3 — Anatomical Cutaway', href: '/v3', desc: 'Engine-diagram of the revenue cycle' },
-  { label: 'V4 — Receipt Stack', href: '/v4', desc: 'Paperwork, ended.' },
-  { label: 'V5 — Working Copy', href: '/v5', desc: 'Copy of V1, edits go here' },
+  { label: 'V1 — Showcase', href: '/', desc: 'Frozen version for sharing' },
+  { label: 'V2 — Working Copy', href: '/v2', desc: 'Active edit target' },
 ];
 
 export default function Navbar() {

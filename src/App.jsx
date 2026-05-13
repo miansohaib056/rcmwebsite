@@ -1,10 +1,7 @@
 import { lazy, Suspense } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
-import HeroV2 from './components/HeroV2';
-import HeroV3 from './components/HeroV3';
-import HeroV4 from './components/HeroV4';
-import V5Page from './components/V5Page';
+import V2Page from './components/V2Page';
 import LogoMarquee from './components/LogoMarquee';
 import Solution from './components/Solution';
 import Footer from './components/Footer';
@@ -27,27 +24,18 @@ const Placeholder = ({ h = 'min-h-[60vh]' }) => (
   </div>
 );
 
-function pickHero() {
-  if (typeof window === 'undefined') return <Hero />;
-  const p = window.location.pathname;
-  if (p.startsWith('/v2')) return <HeroV2 />;
-  if (p.startsWith('/v3')) return <HeroV3 />;
-  if (p.startsWith('/v4')) return <HeroV4 />;
-  return <Hero />;
-}
-
 export default function App() {
-  const isV5 = typeof window !== 'undefined' && window.location.pathname.startsWith('/v5');
+  const isV2 = typeof window !== 'undefined' && window.location.pathname.startsWith('/v2');
 
   return (
     <div className="relative min-h-screen overflow-x-clip">
       <Navbar />
       <main className="relative">
-        {isV5 ? (
-          <V5Page />
+        {isV2 ? (
+          <V2Page />
         ) : (
           <>
-            {pickHero()}
+            <Hero />
             <LogoMarquee />
             <Solution />
             <Suspense fallback={<Placeholder />}>
