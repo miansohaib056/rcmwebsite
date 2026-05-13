@@ -42,6 +42,10 @@ export default function HowItWorks() {
             viewport={{ once: true }}
             className="chip"
           >
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan-300" />
+            </span>
             How it works
           </motion.span>
           <motion.h2
@@ -49,7 +53,7 @@ export default function HowItWorks() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="mt-5 font-display text-4xl md:text-5xl font-bold tracking-tight text-gradient leading-[1.05]"
+            className="mt-5 font-display text-[32px] font-bold tracking-tight text-gradient leading-[1.05]"
           >
             From manual chaos to autonomous revenue — in days.
           </motion.h2>

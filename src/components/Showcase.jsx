@@ -27,6 +27,10 @@ export default function Showcase() {
             viewport={{ once: true }}
             className="chip"
           >
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan-300" />
+            </span>
             The Platform
           </motion.span>
           <motion.h2
@@ -34,7 +38,7 @@ export default function Showcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="mt-5 font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gradient"
+            className="mt-5 font-display text-[32px] font-bold tracking-tight text-gradient"
           >
             A neural network for revenue.
           </motion.h2>

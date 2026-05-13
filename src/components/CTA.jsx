@@ -26,10 +26,13 @@ export default function CTA() {
           <div className="relative grid lg:grid-cols-12 gap-10 items-center">
             <div className="lg:col-span-7">
               <span className="chip">
-                <span className="w-1.5 h-1.5 rounded-full bg-cyan-300" />
+                <span className="relative flex h-1.5 w-1.5">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan-300" />
+                </span>
                 Ready in 14 days
               </span>
-              <h2 className="mt-5 font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gradient leading-[1.05]">
+              <h2 className="mt-5 font-display text-[32px] font-bold tracking-tight text-gradient leading-[1.05]">
                 Let our agents take over your billing — and turn delays into dependable revenue.
               </h2>
               <p className="mt-5 text-lg text-slate-300 max-w-2xl">
