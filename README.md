@@ -1,84 +1,125 @@
-# RCM Automation — Premium Redesign
+# RCM Automation — Redesign
 
-A reimagined, dark-themed, AI-startup-grade redesign of [rcmautomation.ai](https://rcmautomation.ai/).
+Premium dark-themed marketing site for **RCM Automation**, an AI-agent
+platform for medical billing. Seven specialist agents working a single
+revenue cycle end-to-end.
 
-Built with **React + Vite + Tailwind CSS + Framer Motion**. All original messaging,
-agents, and brand identity preserved — visual language elevated.
+Built with **React + Vite + Tailwind CSS + Framer Motion**.
 
-## Highlights
+> **Working on this repo?** Read [CONTRIBUTING.md](./CONTRIBUTING.md) first.
+> If you're an AI agent (Claude / Cursor / etc.), read [CLAUDE.md](./CLAUDE.md).
 
-- **Animated particle hero** (canvas-based, mouse-reactive, DPI-aware, paused offscreen)
-- **Glassmorphism** surfaces, conic-gradient glows, gradient strokes
-- **Scroll-driven parallax** in the product showcase
-- **Animated counters** for stats (Framer Motion `useMotionValue`)
-- **Sticky-rail "How it works"** with progress line
-- **Floating UI chips** around the hero dashboard mockup
-- **Marquee logo strip** with edge fade mask
-- **Fully responsive**, mobile-first, with reduced-motion support
-- **SEO meta** + OG tags + accessible nav + smooth scroll
+---
+
+## Quick start
+
+```bash
+npm install        # Node 18+
+npm run dev        # http://localhost:5173
+```
+
+That's it. Hot reload, no env vars, no backend.
+
+## Routes
+
+| Route | What it is | When to edit |
+|-------|------------|--------------|
+| `/`   | **V1 — Showcase** (frozen for client demos) | Don't edit unless explicitly told. |
+| `/v2` | **V2 — Working copy** | Active iteration target. |
+
+Toggle between them via the **Versions** dropdown in the top nav.
 
 ## File map
 
 ```
 src/
-├── App.jsx                     # Section composition
-├── main.jsx                    # React root
-├── index.css                   # Tailwind layers + design tokens
+├── App.jsx                    # Routing — V1 vs V2 branch
+├── main.jsx                   # React root
+├── index.css                  # Tailwind layers + tokens + keyframes
 └── components/
-    ├── Navbar.jsx              # Sticky glass nav, mobile sheet
-    ├── Hero.jsx                # Headline + animated dashboard
-    ├── ParticleField.jsx       # Canvas particle background
-    ├── LogoMarquee.jsx         # Integrations strip
-    ├── AIAgents.jsx            # Seven-agent feature grid
-    ├── Showcase.jsx            # Orbital "neural network" visual
-    ├── HowItWorks.jsx          # 4-step sticky timeline
-    ├── Stats.jsx               # Animated counters
-    ├── Testimonials.jsx        # Social proof cards
-    ├── CTA.jsx                 # Conversion section
-    └── Footer.jsx              # Footer
+    ├── Navbar.jsx             # Shared — nav + Versions dropdown
+    ├── Footer.jsx             # Shared
+    ├── CircuitBackground.jsx  # Shared — animated SVG circuit board
+    │
+    ├── # V1 (frozen showcase)
+    ├── Hero.jsx, Solution.jsx, AIAgents.jsx, ConveyorSection.jsx,
+    ├── Problems.jsx, Showcase.jsx, HowItWorks.jsx, Stats.jsx,
+    ├── Testimonials.jsx, CTA.jsx, LogoMarquee.jsx
+    │
+    ├── V2Page.jsx             # V2 layout wrapper
+    └── v2/                    # V2 working copy — mirror of V1
+        ├── Hero.jsx, Solution.jsx, AIAgents.jsx, ...
 ```
 
-## Run locally
+## Tech stack
 
-Requires **Node 18+** and npm.
+- **React 18** + **Vite 5** (SPA, no SSR)
+- **Tailwind 3** (JIT)
+- **Framer Motion 11**
+- **Lucide React** for icons
+
+No router library (single-pathname check in `App.jsx`).
+No state management library (component-local state only).
+
+## Design system
+
+| Token | Use |
+|-------|-----|
+| `text-gradient` | All section h2 headings (white → slate → cyan → violet) |
+| `text-gradient-cv` | Inline accent (cyan → violet) |
+| `chip` | Eyebrow pill with pinging cyan dot |
+| `glass`, `glass-strong` | Frosted-glass surfaces |
+| `container-prose` | Page-width wrapper |
+| `cv-auto` | Lazy-render wrapper for offscreen sections |
+
+Fonts: **Inter** body, **Space Grotesk** display, **JetBrains Mono** for data.
+
+## Available scripts
 
 ```bash
-# 1. Install dependencies
-npm install
-
-# 2. Start the dev server (http://localhost:5173)
-npm run dev
-
-# 3. Production build
-npm run build
-
-# 4. Preview the production build
-npm run preview
+npm run dev        # Dev server with hot reload
+npm run build      # Production bundle to ./dist
+npm run preview    # Serve the production build locally
 ```
 
-## Customizing
+## Sharing a live preview
 
-- **Colors / brand** — edit `tailwind.config.js` (`theme.extend.colors`) and the
-  CSS gradient utilities in `src/index.css` (`.text-gradient`, `.btn-primary`, etc.).
-- **Typography** — fonts are loaded in `index.html`. Swap the `<link>` and update
-  `theme.extend.fontFamily` in `tailwind.config.js`.
-- **Content** — every section's copy lives at the top of its component file as a
-  plain JS array (e.g. `agents`, `steps`, `stats`, `testimonials`).
-- **Animations** — most timings live in each component's `transition` props.
-  Reduced-motion is honored globally via the `@media (prefers-reduced-motion)`
-  rule in `src/index.css`.
+Push to the `rcm-preview` branch (single-segment alias of the working
+branch — StackBlitz can't parse slashed branch names):
 
-## Performance notes
+```bash
+git push origin claude/elastic-turing-110c06:rcm-preview
+```
 
-- Canvas particle field is RAF-driven and pauses on `visibilitychange`.
-- All scroll animations use Framer Motion's `viewport={{ once: true }}` so they
-  fire once and stop observing.
-- No images — all visuals are SVG, CSS gradients, or Lucide icons, keeping the
-  bundle small and infinitely crisp.
+Then share:
 
-## Accessibility
+**[stackblitz.com/github/miansohaib056/rcmwebsite/tree/rcm-preview](https://stackblitz.com/github/miansohaib056/rcmwebsite/tree/rcm-preview)**
 
-- Semantic landmarks (`<header>`, `<main>`, `<footer>`, `<nav>`).
-- All interactive elements are real `<a>` / `<button>` with focus styles.
-- Decorative canvas marked `aria-hidden="true"`.
-- Color contrast meets WCAG AA on all text against the dark backdrop.
+The recipient opens it in their browser — no install, no setup, fully
+interactive app.
+
+For a permanent `*.vercel.app` URL, connect the repo at
+[vercel.com/new](https://vercel.com/new). Auto-deploys on every push.
+
+## Performance & accessibility
+
+- Sections below the fold lazy-load via React `Suspense` + `cv-auto`.
+- All scroll reveals use Framer Motion's `viewport={{ once: true }}`.
+- All visuals are SVG / CSS / Lucide — no rasters, no fonts beyond Google Fonts.
+- `prefers-reduced-motion` honored globally via `@media` rule in `index.css`.
+- Semantic landmarks, real `<a>`/`<button>`, WCAG-AA text contrast.
+
+## Project conventions
+
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for:
+
+- Git workflow & branch strategy
+- Commit message style (atomic, conventional)
+- Section / component patterns
+- Where to add keyframes
+- What never to touch
+
+---
+
+**Original site**: [rcmautomation.ai](https://rcmautomation.ai/) — this
+repo is the redesign.
