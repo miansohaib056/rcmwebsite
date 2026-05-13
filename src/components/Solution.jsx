@@ -30,41 +30,54 @@ const rightItems = [
 
 const centerIcons = [Building2, Activity, ShieldCheck];
 
-// Vertical positions of the 4 pills on each side: top group is 9% + 25%,
-// bottom group is 60% + 76%, with a big middle gap behind the center cluster.
-const pillTops = ['9%', '25%', '60%', '76%'];
-// Same positions expressed in viewBox y-units (viewBox height = 440).
-const pillY = [60, 130, 284, 354];
-// Center boxes are vertically centered with labels below. Box-center y in viewBox.
-const BOX_Y = 200;
-const LEFT_BOX_EDGE = 320; // left edge of first RCM box in viewBox x
-const RIGHT_BOX_EDGE = 680; // right edge of last RCM box in viewBox x
-const PILL_END_X = 210; // right edge of left pills (line start)
-const PILL_START_X = 790; // left edge of right pills (line end)
+/* ============================== LAYOUT CONSTANTS ==============================
+ * All positions live in a single coordinate system (1200x520 viewBox).
+ * Pills and SVG lines use these exact coordinates so they always align.
+ */
+const VB_W = 1200;
+const VB_H = 520;
+
+const PILL_W = 220;
+const PILL_H = 56;
+const PILL_X_LEFT = 0;
+const PILL_X_RIGHT = VB_W - PILL_W;
+const PILL_EDGE_LEFT = PILL_W; // right edge of left pills (line start x)
+const PILL_EDGE_RIGHT = PILL_X_RIGHT; // left edge of right pills (line end x)
+
+// Y positions for each of the 4 pills (center-y)
+const PILL_Y = [60, 170, 350, 460];
+
+// Center engine cluster — sized to fit content exactly so logos don't overflow.
+// Content: RCM logo (88) + gap-2 (8) + Payers box (184) + gap-2 (8) + RCM logo (88) = 376
+const ENGINE_H = 88;
+const ENGINE_W = 376;
+const ENGINE_LEFT = (VB_W - ENGINE_W) / 2; // 412
+const ENGINE_RIGHT = ENGINE_LEFT + ENGINE_W; // 788
+const ENGINE_Y = VB_H / 2; // 260
+// Ports land exactly on the center of each RCM logo
+const RCM_LOGO_W = 88;
+const ENGINE_LEFT_PORT = ENGINE_LEFT + RCM_LOGO_W / 2; // 456 — center of left RCM
+const ENGINE_RIGHT_PORT = ENGINE_RIGHT - RCM_LOGO_W / 2; // 744 — center of right RCM
 
 export default function Solution() {
   return (
     <section className="relative py-16 md:py-24 overflow-hidden">
-      {/* Background glow */}
       <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/3 w-[1000px] h-[600px] rounded-full bg-cyan-500/[0.04] blur-[100px]" />
 
       <div className="container-prose relative">
         {/* Top brand stack */}
         <div className="flex flex-col items-center">
-          <div className="relative w-14 h-14 rounded-2xl overflow-hidden">
-            <div className="absolute inset-0 ring-gradient animate-spin-slow" />
-            <div className="absolute inset-[2px] rounded-[14px] bg-ink-950 grid place-items-center">
-              <Sparkles className="w-5 h-5 text-cyan-300" />
-            </div>
-          </div>
-
           <motion.span
             initial={{ opacity: 0, y: 8 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.5 }}
-            className="mt-5 px-4 py-1 rounded-md bg-violet-500/10 text-violet-200 text-sm font-mono ring-1 ring-violet-500/30"
+            className="chip"
           >
+            <span className="relative flex h-1.5 w-1.5">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan-300" />
+            </span>
             Solution
           </motion.span>
 
@@ -75,7 +88,7 @@ export default function Solution() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.7 }}
-            className="mt-2 text-center text-3xl md:text-5xl lg:text-6xl font-bold font-display text-white max-w-4xl leading-[1.1] tracking-tight"
+            className="mt-2 text-center text-[32px] font-bold font-display text-gradient max-w-4xl leading-[1.1] tracking-tight"
           >
             That's why we built RCM Automation,
             <br className="hidden md:block" /> the autonomous AI engine for medical billing
@@ -95,7 +108,7 @@ export default function Solution() {
         </div>
 
         {/* Flow diagram — md+ only */}
-        <div className="hidden md:block relative mt-16 max-w-5xl mx-auto">
+        <div className="hidden md:block relative mt-16">
           <FlowDiagram />
         </div>
 
@@ -106,63 +119,69 @@ export default function Solution() {
   );
 }
 
+/* ============================== FLOW DIAGRAM ============================== */
 function FlowDiagram() {
   return (
-    <div className="relative h-[440px]">
-      {/* Center glow */}
-      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[420px] h-[420px] rounded-full bg-cyan-500/20 blur-[80px]" />
+    <div
+      className="relative mx-auto"
+      style={{
+        maxWidth: VB_W,
+        aspectRatio: `${VB_W} / ${VB_H}`,
+      }}
+    >
+      {/* Soft center glow */}
+      <div className="pointer-events-none absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[520px] h-[420px] rounded-full bg-cyan-500/20 blur-[100px]" />
 
-      {/* SVG: lines + traveling dots */}
+      {/* SVG: connecting lines + animated dots */}
       <svg
-        viewBox="0 0 1000 440"
-        preserveAspectRatio="none"
         className="absolute inset-0 w-full h-full pointer-events-none"
+        viewBox={`0 0 ${VB_W} ${VB_H}`}
+        preserveAspectRatio="none"
       >
         <defs>
-          <linearGradient id="solLineLeft" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0" stopColor="rgba(34,211,238,0)" />
-            <stop offset="0.3" stopColor="rgba(34,211,238,0.35)" />
-            <stop offset="1" stopColor="rgba(139,92,246,0.55)" />
+          <linearGradient id="sol-line-l" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stopColor="rgba(34,211,238,0)" />
+            <stop offset="20%" stopColor="rgba(34,211,238,0.5)" />
+            <stop offset="100%" stopColor="rgba(139,92,246,0.9)" />
           </linearGradient>
-          <linearGradient id="solLineRight" x1="0" x2="1" y1="0" y2="0">
-            <stop offset="0" stopColor="rgba(139,92,246,0.55)" />
-            <stop offset="0.7" stopColor="rgba(34,211,238,0.35)" />
-            <stop offset="1" stopColor="rgba(34,211,238,0)" />
+          <linearGradient id="sol-line-r" x1="0" x2="1" y1="0" y2="0">
+            <stop offset="0%" stopColor="rgba(139,92,246,0.9)" />
+            <stop offset="80%" stopColor="rgba(34,211,238,0.5)" />
+            <stop offset="100%" stopColor="rgba(34,211,238,0)" />
           </linearGradient>
-          <filter id="solDotGlow" x="-100%" y="-100%" width="300%" height="300%">
-            <feGaussianBlur stdDeviation="2.5" result="blur" />
+          <filter id="sol-glow" x="-100%" y="-100%" width="300%" height="300%">
+            <feGaussianBlur stdDeviation="2.5" result="b" />
             <feMerge>
-              <feMergeNode in="blur" />
+              <feMergeNode in="b" />
               <feMergeNode in="SourceGraphic" />
             </feMerge>
           </filter>
         </defs>
 
-        {/* Left side: each pill → first RCM box */}
-        {pillY.map((y, i) => {
+        {/* Left side: pill right-edge → engine left port */}
+        {PILL_Y.map((y, i) => {
           const id = `sol-l-${i}`;
-          // S-curve: leaves pill horizontally, bends toward box center smoothly, enters box horizontally
-          const d = `M ${PILL_END_X} ${y} C ${PILL_END_X + 50} ${y}, ${LEFT_BOX_EDGE - 50} ${BOX_Y}, ${LEFT_BOX_EDGE} ${BOX_Y}`;
+          const x1 = PILL_EDGE_LEFT;
+          const y1 = y;
+          const x2 = ENGINE_LEFT_PORT;
+          const y2 = ENGINE_Y;
+          const d = `M ${x1} ${y1} C ${x1 + 110} ${y1}, ${x2 - 110} ${y2}, ${x2} ${y2}`;
           return (
             <g key={id}>
               <motion.path
                 id={id}
                 d={d}
                 fill="none"
-                stroke="url(#solLineLeft)"
-                strokeWidth="1.2"
+                stroke="url(#sol-line-l)"
+                strokeWidth="1.6"
+                strokeLinecap="round"
                 initial={{ pathLength: 0, opacity: 0 }}
                 whileInView={{ pathLength: 1, opacity: 1 }}
                 viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 1, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 1.1, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
               />
-              <circle r="2.5" fill="#67e8f9" filter="url(#solDotGlow)">
-                <animateMotion
-                  dur="3s"
-                  begin={`${i * 0.75}s`}
-                  repeatCount="indefinite"
-                  rotate="auto"
-                >
+              <circle r="3" fill="#67e8f9" filter="url(#sol-glow)">
+                <animateMotion dur="3.4s" begin={`${i * 0.85}s`} repeatCount="indefinite">
                   <mpath href={`#${id}`} />
                 </animateMotion>
               </circle>
@@ -170,30 +189,30 @@ function FlowDiagram() {
           );
         })}
 
-        {/* Right side: last RCM box → each pill */}
-        {pillY.map((y, i) => {
+        {/* Right side: engine right port → pill left-edge */}
+        {PILL_Y.map((y, i) => {
           const id = `sol-r-${i}`;
-          const d = `M ${RIGHT_BOX_EDGE} ${BOX_Y} C ${RIGHT_BOX_EDGE + 50} ${BOX_Y}, ${PILL_START_X - 50} ${y}, ${PILL_START_X} ${y}`;
+          const x1 = ENGINE_RIGHT_PORT;
+          const y1 = ENGINE_Y;
+          const x2 = PILL_EDGE_RIGHT;
+          const y2 = y;
+          const d = `M ${x1} ${y1} C ${x1 + 110} ${y1}, ${x2 - 110} ${y2}, ${x2} ${y2}`;
           return (
             <g key={id}>
               <motion.path
                 id={id}
                 d={d}
                 fill="none"
-                stroke="url(#solLineRight)"
-                strokeWidth="1.2"
+                stroke="url(#sol-line-r)"
+                strokeWidth="1.6"
+                strokeLinecap="round"
                 initial={{ pathLength: 0, opacity: 0 }}
                 whileInView={{ pathLength: 1, opacity: 1 }}
                 viewport={{ once: true, margin: '-60px' }}
-                transition={{ duration: 1, delay: 0.45 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 1.1, delay: 0.45 + i * 0.1, ease: [0.22, 1, 0.36, 1] }}
               />
-              <circle r="2.5" fill="#c4b5fd" filter="url(#solDotGlow)">
-                <animateMotion
-                  dur="3s"
-                  begin={`${0.35 + i * 0.75}s`}
-                  repeatCount="indefinite"
-                  rotate="auto"
-                >
+              <circle r="3" fill="#c4b5fd" filter="url(#sol-glow)">
+                <animateMotion dur="3.4s" begin={`${0.4 + i * 0.85}s`} repeatCount="indefinite">
                   <mpath href={`#${id}`} />
                 </animateMotion>
               </circle>
@@ -202,112 +221,148 @@ function FlowDiagram() {
         })}
       </svg>
 
-      {/* Left pills — absolute positioned, grouped 2/2 */}
+      {/* Pills + engine — positioned in same coordinate system as SVG (percentage-based) */}
       {leftItems.map((item, i) => (
-        <Pill
+        <PillAbsolute
           key={item.label}
           icon={item.icon}
           label={item.label}
           delay={i * 0.08}
-          className="absolute left-0"
-          style={{ top: pillTops[i], transform: 'translateY(-50%)' }}
+          style={{
+            position: 'absolute',
+            left: `${(PILL_X_LEFT / VB_W) * 100}%`,
+            top: `calc(${(PILL_Y[i] / VB_H) * 100}% - ${PILL_H / 2}px)`,
+            width: `${(PILL_W / VB_W) * 100}%`,
+          }}
         />
       ))}
 
-      {/* Center cluster */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 flex items-end gap-3 z-10">
-        <CenterColumn label="RCM" delay={0.2}>
-          <RcmLogo />
-        </CenterColumn>
-        <CenterColumn label="Payers" delay={0.3}>
-          <PayersBox />
-        </CenterColumn>
-        <CenterColumn label="RCM" delay={0.4}>
-          <RcmLogo />
-        </CenterColumn>
-      </div>
-
-      {/* Right pills — absolute positioned, grouped 2/2 */}
       {rightItems.map((item, i) => (
-        <Pill
+        <PillAbsolute
           key={item.label}
           icon={item.icon}
           label={item.label}
           delay={0.4 + i * 0.08}
-          className="absolute right-0 justify-start"
-          style={{ top: pillTops[i], transform: 'translateY(-50%)' }}
+          align="right"
+          style={{
+            position: 'absolute',
+            left: `${(PILL_X_RIGHT / VB_W) * 100}%`,
+            top: `calc(${(PILL_Y[i] / VB_H) * 100}% - ${PILL_H / 2}px)`,
+            width: `${(PILL_W / VB_W) * 100}%`,
+          }}
         />
       ))}
+
+      {/* Center engine cluster — logo's vertical center sits exactly on ENGINE_Y */}
+      <div
+        className="absolute z-10"
+        style={{
+          left: `${(ENGINE_LEFT / VB_W) * 100}%`,
+          top: `calc(${(ENGINE_Y / VB_H) * 100}% - 44px)`,
+          width: `${(ENGINE_W / VB_W) * 100}%`,
+        }}
+      >
+        <div className="flex items-end justify-between gap-2">
+          <CenterColumn label="RCM" delay={0.2}>
+            <RcmLogo />
+          </CenterColumn>
+          <CenterColumn label="Payers" delay={0.3}>
+            <PayersBox />
+          </CenterColumn>
+          <CenterColumn label="RCM" delay={0.4}>
+            <RcmLogo />
+          </CenterColumn>
+        </div>
+      </div>
     </div>
   );
 }
 
-function Pill({ icon: Icon, label, delay = 0, className = '', style }) {
+/* ============================== PILL (ABSOLUTE) ============================== */
+function PillAbsolute({ icon: Icon, label, delay = 0, style, align = 'left' }) {
   return (
     <motion.div
       style={style}
       initial={{ opacity: 0, scale: 0.94 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.45, delay, ease: [0.22, 1, 0.36, 1] }}
-      className={`flex items-center gap-3 px-4 py-2.5 rounded-full bg-ink-900/80 ring-1 ring-cyan-400/20 hover:ring-cyan-400/40 transition-colors gpu shadow-[0_4px_20px_-8px_rgba(0,0,0,0.6)] min-w-[180px] backdrop-blur-sm ${className}`}
+      transition={{ duration: 0.5, delay, ease: [0.22, 1, 0.36, 1] }}
     >
-      <Icon className="w-4 h-4 text-cyan-300/90 shrink-0" />
-      <span className="text-sm text-slate-200 font-medium">{label}</span>
+      <div
+        className={`flex items-center gap-3 px-3.5 py-2.5 rounded-2xl bg-ink-900/90 ring-1 ring-white/[0.06] hover:ring-cyan-400/40 transition-all duration-300 hover:-translate-y-[1px] hover:shadow-[0_8px_30px_-12px_rgba(34,211,238,0.4)] backdrop-blur-sm group ${
+          align === 'right' ? 'flex-row-reverse text-right' : ''
+        }`}
+      >
+        <div className="w-8 h-8 rounded-lg bg-cyan-400/[0.08] ring-1 ring-cyan-400/20 grid place-items-center shrink-0 transition-colors duration-300 group-hover:bg-cyan-400/[0.18] group-hover:ring-cyan-400/50">
+          <Icon className="w-4 h-4 text-cyan-300" strokeWidth={1.8} />
+        </div>
+        <span className="text-[14px] text-slate-100 font-medium tracking-tight truncate">{label}</span>
+      </div>
     </motion.div>
   );
 }
 
+/* ============================== CENTER COLUMN ============================== */
 function CenterColumn({ children, label, delay }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 12 }}
-      whileInView={{ opacity: 1, y: 0 }}
+      initial={{ opacity: 0 }}
+      whileInView={{ opacity: 1 }}
       viewport={{ once: true, margin: '-60px' }}
-      transition={{ duration: 0.5, delay }}
+      transition={{ duration: 0.55, delay }}
       className="flex flex-col items-center gap-3"
     >
       {children}
-      <span className="text-xs font-mono uppercase tracking-[0.2em] text-slate-400">
+      <span className="text-[10.5px] font-mono uppercase tracking-[0.22em] text-slate-400">
         {label}
       </span>
     </motion.div>
   );
 }
 
+/* ============================== RCM LOGO ============================== */
 function RcmLogo() {
   return (
-    <div className="w-20 h-20 rounded-xl bg-ink-900/80 ring-1 ring-cyan-400/40 grid place-items-center shadow-[0_0_30px_rgba(34,211,238,0.25)] gpu backdrop-blur-sm">
-      <div className="relative w-10 h-10 rounded-md overflow-hidden">
-        <div className="absolute inset-0 ring-gradient" />
-        <div className="absolute inset-[2px] rounded-[4px] bg-ink-950 grid place-items-center">
-          <Sparkles className="w-4 h-4 text-cyan-300" />
+    <div className="relative w-[88px] h-[88px] rounded-2xl bg-ink-900/90 ring-1 ring-cyan-400/40 grid place-items-center shadow-[0_0_40px_rgba(34,211,238,0.28)] backdrop-blur-sm">
+      <div className="absolute inset-[6px] rounded-xl border border-cyan-400/15" />
+      <div className="relative w-11 h-11 rounded-lg overflow-hidden">
+        <div className="absolute inset-0 ring-gradient animate-spin-slow" />
+        <div className="absolute inset-[2px] rounded-[6px] bg-ink-950 grid place-items-center">
+          <Sparkles className="w-5 h-5 text-cyan-300" />
         </div>
       </div>
     </div>
   );
 }
 
+/* ============================== PAYERS BOX ============================== */
 function PayersBox() {
   return (
-    <div className="h-20 px-2 rounded-xl bg-ink-900/80 ring-1 ring-cyan-400/40 flex items-center gap-1.5 shadow-[0_0_30px_rgba(34,211,238,0.25)] gpu backdrop-blur-sm">
+    <div className="h-[88px] px-3 rounded-2xl bg-ink-900/90 ring-1 ring-cyan-400/40 flex items-center gap-2 shadow-[0_0_40px_rgba(34,211,238,0.28)] backdrop-blur-sm">
       {centerIcons.map((Icon, i) => (
         <div
           key={i}
-          className="w-12 h-12 rounded-lg ring-1 ring-cyan-400/30 bg-ink-950/60 grid place-items-center"
+          className="w-12 h-12 rounded-xl ring-1 ring-cyan-400/30 bg-ink-950/60 grid place-items-center hover:ring-cyan-400/60 transition-colors"
         >
-          <Icon className="w-4 h-4 text-cyan-300" />
+          <Icon className="w-4 h-4 text-cyan-300" strokeWidth={1.8} />
         </div>
       ))}
     </div>
   );
 }
 
+/* ============================== MOBILE FLOW ============================== */
 function MobileFlow() {
   return (
     <div className="md:hidden mt-12 grid grid-cols-2 gap-2.5">
       {[...leftItems, ...rightItems].map((item, i) => (
-        <Pill key={item.label} icon={item.icon} label={item.label} delay={i * 0.04} />
+        <PillAbsolute
+          key={item.label}
+          icon={item.icon}
+          label={item.label}
+          delay={i * 0.04}
+          style={{ position: 'static' }}
+        />
       ))}
     </div>
   );

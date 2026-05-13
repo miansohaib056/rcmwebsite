@@ -9,6 +9,7 @@ import {
   Coins,
   CircleDollarSign,
   Phone,
+  Sparkles,
 } from 'lucide-react';
 import AgentDashboard from './AgentDashboard';
 import AgentElixaPanel from './AgentElixaPanel';
@@ -89,36 +90,52 @@ export default function AIAgents() {
       <div className="absolute inset-0 -z-10 grid-bg opacity-60" />
 
       <div className="container-prose">
-        <div className="max-w-3xl">
-          <motion.span
-            initial={{ opacity: 0, y: 16 }}
-            whileInView={{ opacity: 1, y: 0 }}
+        <div className="grid lg:grid-cols-[minmax(0,1fr)_auto] gap-10 items-center">
+          <div className="max-w-3xl">
+            <motion.span
+              initial={{ opacity: 0, y: 16 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.6 }}
+              className="chip"
+            >
+              <span className="relative flex h-1.5 w-1.5">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-cyan-400 opacity-75" />
+                <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-cyan-300" />
+              </span>
+              Meet the AI Workforce
+            </motion.span>
+            <motion.h2
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.7 }}
+              className="mt-5 font-display text-[32px] font-bold tracking-tight text-gradient"
+            >
+              Which AI Agents has RCM Automation Developer<br className="hidden md:block" /> to Automate Medical Billing?
+            </motion.h2>
+            <motion.p
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: '-80px' }}
+              transition={{ duration: 0.7, delay: 0.1 }}
+              className="mt-5 text-lg text-slate-300 max-w-2xl"
+            >
+              RCM Automation brings together medical billing specialists and AI engineers to build
+              7 powerful AI agents for RCM. Each AI RCM agent is designed to take over a repetitive
+              billing task, so your staff can spend less time on paperwork.
+            </motion.p>
+          </div>
+          {/* AI orbital emblem — right side */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.92 }}
+            whileInView={{ opacity: 1, scale: 1 }}
             viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.6 }}
-            className="chip"
+            transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
+            className="hidden lg:block justify-self-end"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-300" />
-            Meet the AI Workforce
-          </motion.span>
-          <motion.h2
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.7 }}
-            className="mt-5 font-display text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gradient"
-          >
-            Eight specialists.<br className="hidden md:block" /> One revenue cycle.
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 24 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: '-80px' }}
-            transition={{ duration: 0.7, delay: 0.1 }}
-            className="mt-5 text-lg text-slate-300 max-w-2xl"
-          >
-            Each agent is purpose-built for one stage of the billing pipeline — collaborating
-            autonomously to deliver near-perfect claims, faster payments, and fewer denials.
-          </motion.p>
+            <AiOrbit />
+          </motion.div>
         </div>
 
         <div className="mt-12 grid lg:grid-cols-[280px_minmax(0,1fr)] gap-5">
@@ -213,5 +230,103 @@ function AgentTab({ agent, isActive, onClick }) {
         </span>
       )}
     </button>
+  );
+}
+
+/* ============================== AI ORBIT ==============================
+ * Animated AI emblem: glowing core + 3 counter-rotating orbital rings with
+ * traveling nodes. Inspired by neural-network / atomic orbital aesthetics.
+ */
+function AiOrbit() {
+  return (
+    <div className="relative w-[320px] h-[320px] grid place-items-center">
+      {/* Ambient glow */}
+      <div className="absolute inset-8 rounded-full bg-cyan-400/10 blur-[60px]" />
+      <div className="absolute inset-12 rounded-full bg-violet-400/10 blur-[50px]" />
+
+      <svg viewBox="0 0 320 320" className="absolute inset-0 w-full h-full">
+        <defs>
+          <linearGradient id="ai-ring-1" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.85" />
+            <stop offset="60%" stopColor="#22d3ee" stopOpacity="0.15" />
+            <stop offset="100%" stopColor="#22d3ee" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="ai-ring-2" x1="1" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor="#a78bfa" stopOpacity="0.85" />
+            <stop offset="60%" stopColor="#a78bfa" stopOpacity="0.15" />
+            <stop offset="100%" stopColor="#a78bfa" stopOpacity="0" />
+          </linearGradient>
+          <linearGradient id="ai-ring-3" x1="0" y1="1" x2="1" y2="0">
+            <stop offset="0%" stopColor="#22d3ee" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="#a78bfa" stopOpacity="0.7" />
+          </linearGradient>
+          <radialGradient id="ai-core">
+            <stop offset="0%" stopColor="#67e8f9" stopOpacity="1" />
+            <stop offset="40%" stopColor="#22d3ee" stopOpacity="0.7" />
+            <stop offset="100%" stopColor="#0e7490" stopOpacity="0" />
+          </radialGradient>
+          <filter id="ai-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="3" result="b" />
+            <feMerge>
+              <feMergeNode in="b" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
+
+        {/* Outer ring — rotates clockwise slowly */}
+        <g style={{ transformOrigin: '160px 160px' }} className="animate-[aiSpin_22s_linear_infinite]">
+          <circle cx="160" cy="160" r="140" fill="none" stroke="url(#ai-ring-1)" strokeWidth="1.2" strokeDasharray="2 5" />
+          <circle cx="160" cy="20" r="3" fill="#67e8f9" filter="url(#ai-glow)" />
+          <circle cx="300" cy="160" r="2" fill="#67e8f9" />
+        </g>
+
+        {/* Middle ring — rotates counter-clockwise */}
+        <g style={{ transformOrigin: '160px 160px' }} className="animate-[aiSpinRev_16s_linear_infinite]">
+          <ellipse cx="160" cy="160" rx="110" ry="40" fill="none" stroke="url(#ai-ring-2)" strokeWidth="1.4" transform="rotate(35 160 160)" />
+          <circle cx="270" cy="160" r="3.5" fill="#c4b5fd" filter="url(#ai-glow)" transform="rotate(35 160 160)" />
+        </g>
+
+        {/* Tilted ring — opposite tilt */}
+        <g style={{ transformOrigin: '160px 160px' }} className="animate-[aiSpin_18s_linear_infinite]">
+          <ellipse cx="160" cy="160" rx="110" ry="40" fill="none" stroke="url(#ai-ring-3)" strokeWidth="1.4" transform="rotate(-35 160 160)" />
+          <circle cx="50" cy="160" r="3.5" fill="#67e8f9" filter="url(#ai-glow)" transform="rotate(-35 160 160)" />
+        </g>
+
+        {/* Inner ring — fast clockwise */}
+        <g style={{ transformOrigin: '160px 160px' }} className="animate-[aiSpinRev_10s_linear_infinite]">
+          <circle cx="160" cy="160" r="78" fill="none" stroke="rgba(34,211,238,0.3)" strokeWidth="1" strokeDasharray="1 4" />
+        </g>
+
+
+        {/* Constellation dots — quietly twinkling */}
+        {[
+          { x: 80, y: 80, d: '0s' },
+          { x: 240, y: 90, d: '0.4s' },
+          { x: 250, y: 240, d: '0.8s' },
+          { x: 70, y: 230, d: '1.2s' },
+          { x: 160, y: 40, d: '1.6s' },
+          { x: 280, y: 160, d: '2s' },
+        ].map((p, i) => (
+          <circle
+            key={i}
+            cx={p.x}
+            cy={p.y}
+            r="1.5"
+            fill="#67e8f9"
+            opacity="0.4"
+            className="animate-[aiTwinkle_3s_ease-in-out_infinite]"
+            style={{ animationDelay: p.d }}
+          />
+        ))}
+      </svg>
+
+      {/* Central AI sparkle icon — filled, no background */}
+      <Sparkles
+        className="relative z-10 w-14 h-14 text-cyan-200 drop-shadow-[0_0_18px_rgba(34,211,238,0.8)]"
+        fill="currentColor"
+        strokeWidth={1.2}
+      />
+    </div>
   );
 }
