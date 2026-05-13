@@ -167,13 +167,45 @@ re-litigate them:
   section height is `100vh + shift` where `shift = trackWidth - viewportWidth`,
   recomputed on resize via `ResizeObserver`.
 
-## Branch / commit conventions
+## Branch / commit / deploy conventions
 
-- Working branch: `claude/elastic-turing-110c06`
-- Mirror branch (shared with stakeholders): `rcm-preview` (push to both)
-- Commits: conventional-ish (`feat:`, `refactor:`, `chore:`, `fix:`)
-- Keep commits **atomic** per section/concern — user has emphasized this
+- **`main` is production.** It's wired to Vercel — every push auto-deploys
+  to https://rcmwebsite.vercel.app. **Treat it like the live site, because
+  it is.**
+- **Working branch**: `claude/elastic-turing-110c06`
+- **Stakeholder preview alias**: `rcm-preview` (single-segment name so
+  StackBlitz can parse it; mirrors the working branch)
+- **Commits**: conventional-ish (`feat:`, `refactor:`, `chore:`, `fix:`)
+- Keep commits **atomic** per section/concern — owner has emphasized this
   ("if I want to revert one section it should not affect others").
+
+### The default deploy flow (use this — don't push to main directly)
+
+```
+1. Edit on the working branch (claude/... or any feature branch)
+2. git push origin <branch>
+   → Vercel automatically creates a *preview* URL for that branch
+     (free, per-branch, doesn't touch production)
+3. Share that preview URL with stakeholders
+4. When approved: open a PR on GitHub
+5. Merge PR → main → production deploy
+```
+
+This gives the owner a review window, easy rollback (revert the PR), and
+keeps `main` history clean. **It is also the only way to honor the V1
+"frozen showcase" rule reliably** — production stays untouched until a
+deliberate merge.
+
+### If the user says "push to main" anyway
+
+**Stop and confirm before doing it.** Say something like:
+
+> "Pushing to main will deploy live to production immediately. Want me to
+> push to the working branch first so Vercel gives you a preview URL,
+> then we can merge via PR when you're happy? Otherwise I'll go ahead."
+
+Only push to main if they confirm. *Even then*, push the working branch
+first so a preview exists for rollback reference.
 
 ## Shareable preview link (StackBlitz)
 
@@ -197,9 +229,15 @@ git push origin <current-branch>:rcm-preview
 
 ## Don'ts
 
+- ❌ **Don't push to `main` without explicit confirmation.** It's wired to
+  Vercel production. Default to pushing the working branch and using the
+  Vercel preview URL instead. See "deploy flow" section above.
 - ❌ Don't edit V1 files (`src/components/*.jsx`, excluding `v2/`) unless
   explicitly told.
 - ❌ Don't add new top-level deps without checking with the user.
 - ❌ Don't introduce a router library — pathname check is sufficient.
 - ❌ Don't add testing infra unless asked.
 - ❌ Don't commit `.claude/` (it's worktree state — already in .gitignore).
+- ❌ Don't remove `vercel.json` — the SPA rewrite in it is what makes
+  `/v2` (and any future client route) resolve in production. Without it,
+  every non-root URL returns 404 on Vercel.

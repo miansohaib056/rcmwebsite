@@ -101,15 +101,29 @@ Every marketing section follows this skeleton:
 
 ### Branches
 
-- `main` — official trunk (don't push here directly)
+- `main` — **production trunk.** Wired to Vercel — every push deploys live
+  to https://rcmwebsite.vercel.app. **Never push here directly.** Open a
+  PR.
 - `claude/elastic-turing-110c06` — current working branch
 - `rcm-preview` — single-segment alias of the working branch, used for
   StackBlitz sharing (StackBlitz can't parse slashed branch names)
 
+### The deploy flow
+
+```
+working branch → push → Vercel auto-generates a preview URL
+                      → share that with stakeholders
+                      → open PR when ready
+                      → merge PR → main → production deploy
+```
+
+Every branch you push to GitHub gets its own Vercel preview URL for free.
+You almost never need to push to `main` manually — let the PR merge do it.
+
 ### Pushing
 
 ```bash
-# Push working branch
+# Push working branch (Vercel creates a preview URL automatically)
 git push origin claude/elastic-turing-110c06
 
 # Mirror to preview branch (updates the StackBlitz link)
@@ -118,6 +132,9 @@ git push origin claude/elastic-turing-110c06:rcm-preview
 # Both at once
 git push origin claude/elastic-turing-110c06 claude/elastic-turing-110c06:rcm-preview
 ```
+
+**To deploy to production:** open a PR from your working branch into
+`main` and merge it. Don't push directly to `main`.
 
 ### Commit style
 
