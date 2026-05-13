@@ -1,7 +1,17 @@
-import { motion, AnimatePresence } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import { ArrowRight, ShieldCheck, CheckCircle2, Activity, Sparkles, Zap, Check, DollarSign, Search, Send, CircleDot } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { ArrowRight, ShieldCheck, CheckCircle2, Sparkles, Zap, Check } from 'lucide-react';
 import CircuitBackground from './CircuitBackground';
+
+const ENTRIES = [
+  { cls: 'text-emerald-400 bg-emerald-400/10', tag: 'ELIG', text: 'Eligibility verified', code: 'BCBS-IL', desc: '· copay $30', time: '12s ago' },
+  { cls: 'text-emerald-400 bg-emerald-400/10', tag: 'COD', text: 'CODIN', code: '99214 + E11.9', desc: '→ proposed', time: '8s ago' },
+  { cls: 'text-emerald-400 bg-emerald-400/10', tag: 'COD', text: 'CODIN', code: '-25', desc: '→ modifier applied', time: '7s ago' },
+  { cls: 'text-amber-400 bg-amber-400/10', tag: 'SCR', text: 'Scrubber', code: 'passed', desc: '→ NCCI pair check', time: '4s ago' },
+  { cls: 'text-amber-400 bg-amber-400/10', tag: 'SCR', text: 'Scrubber', code: 'BCBS-IL ok', desc: '→ payer LCD', time: '3s ago' },
+  { cls: 'text-amber-400 bg-amber-400/10', tag: 'SCR', text: 'Scrubber', code: '96 / 100', desc: '→ risk score', time: '2s ago' },
+  { cls: 'text-rose-400 bg-rose-400/10', tag: 'CLA', text: 'CLAIR', code: 'CARC-197', desc: 'queuing appeal pattern', time: 'now' },
+];
 
 const fadeUp = {
   hidden: { opacity: 0, y: 24 },
@@ -46,7 +56,7 @@ export default function Hero() {
             initial="hidden"
             animate="show"
             custom={1}
-            className="mt-6 font-display text-[40px] leading-[1.2] font-bold tracking-tight text-white"
+            className="mt-6 font-display text-[40px] leading-[1.2] font-bold tracking-tight text-gradient"
           >
             RCM Automation with Advanced AI Agents{' '}
             <span className="font-light text-slate-500/70 mx-1">|</span>{' '}
@@ -60,9 +70,10 @@ export default function Hero() {
             custom={2}
             className="mt-7 text-lg md:text-xl text-slate-300/90 max-w-2xl lg:mx-0 mx-auto"
           >
-            Replace manual billing with a fleet of AI agents that automate eligibility, coding,
-            prior authorizations, and denial follow-ups — capturing up to{' '}
-            <span className="text-white font-semibold">20% more earned revenue</span>.
+            RCM Automation uses powerful AI agents for medical billing to replace manual billing
+            tasks. These AI RCM agents automate eligibility verification, coding, denial follow-ups,
+            and other such tasks to help providers capture up to{' '}
+            <span className="text-white font-semibold">20% more of their earned revenue</span>.
           </motion.p>
 
           <motion.div
@@ -112,76 +123,106 @@ export default function Hero() {
           transition={{ duration: 1, delay: 0.4, ease: [0.22, 1, 0.36, 1] }}
           className="lg:col-span-5 relative"
         >
-          <HeroDashboard />
+          <HeroVisual />
         </motion.div>
       </div>
-
-      {/* Scroll cue */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 1.4 }}
-        className="absolute bottom-6 left-1/2 -translate-x-1/2 hidden md:flex flex-col items-center gap-2 text-slate-500 text-xs uppercase tracking-[0.2em]"
-      >
-        Scroll
-        <span className="w-px h-10 bg-gradient-to-b from-cyan-400/60 to-transparent animate-pulse-slow" />
-      </motion.div>
     </section>
   );
 }
 
-const STAGES = [
-  { label: 'Eligibility', icon: CheckCircle2 },
-  { label: 'Coding', icon: CheckCircle2 },
-  { label: 'Scrub', icon: Search },
-  { label: 'Submit', icon: Send },
-  { label: 'Paid', icon: DollarSign },
-];
-
-const ACTIVITY_ENTRIES = [
-  { cls: 'text-cyan-400 bg-cyan-400/10', tag: 'ELIG', text: 'Eligibility verified', code: 'BCBS-IL', desc: 'copay $30', time: '12s ago' },
-  { cls: 'text-cyan-400 bg-cyan-400/10', tag: 'COD', text: 'CODIN', code: '99214 + E11.9', desc: 'proposed', time: '8s ago' },
-  { cls: 'text-cyan-400 bg-cyan-400/10', tag: 'COD', text: 'CODIN', code: '-25', desc: 'modifier applied', time: '7s ago' },
-  { cls: 'text-amber-400 bg-amber-400/10', tag: 'SCR', text: 'Scrubber', code: 'passed', desc: 'NCCI pair check', time: '4s ago' },
-  { cls: 'text-amber-400 bg-amber-400/10', tag: 'SCR', text: 'Scrubber', code: 'BCBS-IL ok', desc: 'payer LCD', time: '3s ago' },
-  { cls: 'text-amber-400 bg-amber-400/10', tag: 'SCR', text: 'Scrubber', code: '96 / 100', desc: 'risk score', time: '2s ago' },
-  { cls: 'text-rose-400 bg-rose-400/10', tag: 'CLA', text: 'CLAIR', code: 'CARC-197', desc: 'queuing appeal', time: 'now' },
-];
-
-function HeroDashboard() {
-  const [activeStage, setActiveStage] = useState(2);
-  const [visibleEntries, setVisibleEntries] = useState([]);
+function HeroVisual() {
+  const containerRef = useRef(null);
+  const cardRef = useRef(null);
+  const riskRef = useRef(null);
+  const codesRef = useRef(null);
+  const listRef = useRef(null);
   const [riskScore, setRiskScore] = useState(96);
+  const [stageIndex, setStageIndex] = useState(0);
   const cursorRef = useRef(5);
+  const widthPerStage = 76 / 4;
 
+  // Mouse parallax — three layers at different rates, opposing directions
   useEffect(() => {
-    const initial = ACTIVITY_ENTRIES.slice(0, 5);
-    initial.forEach((entry, i) => {
-      setTimeout(() => {
-        setVisibleEntries((prev) => [...prev.slice(-4), { ...entry, id: i }]);
-      }, 1400 + i * 220);
-    });
+    const container = containerRef.current;
+    const card = cardRef.current;
+    const risk = riskRef.current;
+    const codes = codesRef.current;
+    if (!container || !card || !risk || !codes) return;
+    if (!window.matchMedia('(hover: hover)').matches) return;
 
+    const onMove = (e) => {
+      const rect = container.getBoundingClientRect();
+      const x = (e.clientX - rect.left) / rect.width - 0.5;
+      const y = (e.clientY - rect.top) / rect.height - 0.5;
+      card.style.transform = `translate(${x * 6}px, ${y * 6}px)`;
+      risk.style.transform = `translate(${x * 14}px, ${y * 14}px)`;
+      codes.style.transform = `translate(${x * -12}px, ${y * -12}px)`;
+    };
+    const onLeave = () => {
+      card.style.transform = risk.style.transform = codes.style.transform = '';
+    };
+    container.addEventListener('mousemove', onMove, { passive: true });
+    container.addEventListener('mouseleave', onLeave);
+    return () => {
+      container.removeEventListener('mousemove', onMove);
+      container.removeEventListener('mouseleave', onLeave);
+    };
+  }, []);
+
+  // Activity log — vanilla DOM, matching the reference exactly
+  useEffect(() => {
+    const list = listRef.current;
+    if (!list) return;
+
+    function pushEntry(e, delay = 0) {
+      const el = document.createElement('div');
+      el.className = 'hero-activity-item';
+      el.style.animationDelay = `${delay}ms`;
+      el.innerHTML = `
+        <span class="hero-act-icon ${e.cls}">${e.tag}</span>
+        <div class="hero-act-meta">
+          <span class="hero-act-name">${e.text}</span>
+          <span class="hero-act-desc">${e.desc}</span>
+          <code class="hero-act-code">${e.code}</code>
+        </div>
+        <div class="hero-act-time">${e.time}</div>
+      `;
+      list.appendChild(el);
+      while (list.children.length > 5) {
+        const first = list.firstChild;
+        first.style.transition = 'opacity .35s ease, transform .35s ease';
+        first.style.opacity = '0';
+        first.style.transform = 'translateY(-4px)';
+        setTimeout(() => first.remove(), 350);
+        break;
+      }
+    }
+
+    ENTRIES.slice(0, 5).forEach((e, i) => pushEntry(e, 1400 + i * 220));
     const interval = setInterval(() => {
-      const entry = ACTIVITY_ENTRIES[cursorRef.current % ACTIVITY_ENTRIES.length];
-      setVisibleEntries((prev) => [...prev.slice(-4), { ...entry, time: 'now', id: Date.now() }]);
+      pushEntry({ ...ENTRIES[cursorRef.current % ENTRIES.length], time: 'now' });
       cursorRef.current++;
     }, 3200);
-
     return () => clearInterval(interval);
   }, []);
 
+  // Stage cycling — start at Eligibility, progress through to Paid, then reset
   useEffect(() => {
+    let idx = 0;
+    setStageIndex(0);
     const interval = setInterval(() => {
-      setActiveStage((prev) => {
-        if (prev < STAGES.length - 1) return prev + 1;
-        setTimeout(() => setActiveStage(2), 1800);
-        return prev;
-      });
-    }, 2800);
+      if (idx < 4) {
+        idx++;
+        setStageIndex(idx);
+      } else {
+        idx = 0;
+        setStageIndex(0);
+      }
+    }, 1800);
     return () => clearInterval(interval);
   }, []);
 
+  // Risk score jitter
   useEffect(() => {
     const interval = setInterval(() => {
       setRiskScore(96 - Math.floor(Math.random() * 3));
@@ -189,13 +230,11 @@ function HeroDashboard() {
     return () => clearInterval(interval);
   }, []);
 
-  const progressWidth = `${(activeStage / (STAGES.length - 1)) * 100}%`;
-
   return (
-    <div className="relative" style={{ minHeight: 520 }}>
-      {/* Decorative grid behind */}
+    <div ref={containerRef} className="relative h-[580px]">
+      {/* Decorative grid — context layer */}
       <div
-        className="absolute -inset-10 opacity-40 pointer-events-none"
+        className="absolute -inset-10 opacity-50 pointer-events-none"
         style={{
           backgroundImage: 'linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px)',
           backgroundSize: '32px 32px',
@@ -204,45 +243,38 @@ function HeroDashboard() {
         }}
       />
 
-      {/* Floating: Risk score card */}
-      <motion.div
-        initial={{ opacity: 0, y: 14, scale: 0.96 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.7, delay: 1.1, ease: [0.2, 0.7, 0.2, 1] }}
-        className="absolute -top-2 -right-4 z-10 glass rounded-xl p-3.5 shadow-lg border border-white/10 w-[168px]"
+      {/* Floating: Risk score (Scrubber) — breaks frame top-right */}
+      <div
+        ref={riskRef}
+        className="absolute -top-2 -right-6 z-10 glass rounded-xl p-3.5 shadow-lg border border-white/10 w-[168px] opacity-0 animate-[heroFloat_0.7s_cubic-bezier(.2,.7,.2,1)_1.1s_forwards]"
+        style={{ transition: 'transform 0.15s ease-out' }}
       >
         <div className="flex items-center justify-between mb-2">
-          <span className="text-[10px] uppercase tracking-[0.08em] text-slate-400 font-medium">Risk score</span>
+          <span className="text-[10.5px] uppercase tracking-[0.08em] text-slate-400 font-medium">Risk score</span>
           <span className="text-[9px] font-mono text-amber-400 bg-amber-400/10 px-1.5 py-0.5 rounded">Scrubber</span>
         </div>
         <div className="flex items-baseline gap-1 mb-2">
-          <span className="text-3xl font-semibold text-white tracking-tight">{riskScore}</span>
+          <span className="font-display text-4xl text-white leading-none">{riskScore}</span>
           <span className="text-xs font-mono text-slate-500">/ 100</span>
         </div>
         <div className="h-[5px] bg-white/5 rounded-full overflow-hidden mb-2">
-          <motion.div
-            initial={{ width: 0 }}
-            animate={{ width: '96%' }}
-            transition={{ duration: 2.4, delay: 1.6, ease: [0.2, 0.7, 0.2, 1] }}
-            className="h-full bg-gradient-to-r from-cyan-400 to-cyan-500 rounded-full"
-          />
+          <div className="h-full bg-gradient-to-r from-emerald-400 to-emerald-500 rounded-full w-0 animate-[heroFill_2.4s_cubic-bezier(.2,.7,.2,1)_1.6s_forwards]" />
         </div>
-        <div className="flex items-center gap-1.5 text-[11px] text-cyan-400">
-          <span className="w-[5px] h-[5px] rounded-full bg-cyan-400" />
+        <div className="flex items-center gap-1.5 text-[11px] text-emerald-400">
+          <span className="w-[5px] h-[5px] rounded-full bg-emerald-400" />
           Clean — auto-submit
         </div>
-      </motion.div>
+      </div>
 
-      {/* Floating: Code set card */}
-      <motion.div
-        initial={{ opacity: 0, y: 14, scale: 0.96 }}
-        animate={{ opacity: 1, y: 0, scale: 1 }}
-        transition={{ duration: 0.7, delay: 1.3, ease: [0.2, 0.7, 0.2, 1] }}
-        className="absolute bottom-6 -left-7 z-10 glass rounded-xl p-3.5 shadow-lg border border-white/10 w-[200px]"
+      {/* Floating: Code set (CODIN) — breaks frame bottom-left */}
+      <div
+        ref={codesRef}
+        className="absolute -bottom-2 -left-6 z-10 glass rounded-xl p-3.5 shadow-lg border border-white/10 w-[200px] opacity-0 animate-[heroFloat_0.7s_cubic-bezier(.2,.7,.2,1)_1.3s_forwards]"
+        style={{ transition: 'transform 0.15s ease-out' }}
       >
         <div className="flex items-center justify-between mb-2.5">
-          <span className="text-[10px] uppercase tracking-[0.08em] text-slate-400 font-medium">Code set</span>
-          <span className="text-[9px] font-mono text-cyan-400 bg-cyan-400/10 px-1.5 py-0.5 rounded">CODIN</span>
+          <span className="text-[10.5px] uppercase tracking-[0.08em] text-slate-400 font-medium">Code set</span>
+          <span className="text-[9px] font-mono text-emerald-400 bg-emerald-400/10 px-1.5 py-0.5 rounded">CODIN</span>
         </div>
         <div className="flex flex-col gap-[7px]">
           {[
@@ -255,66 +287,66 @@ function HeroDashboard() {
               <span className="text-slate-500">{row.k}</span>
               <span className="text-white font-medium flex items-center gap-1.5">
                 {row.v}
-                <span className="w-3 h-3 rounded-full bg-cyan-400 text-white grid place-items-center text-[7px] font-bold">✓</span>
+                <span className="w-3 h-3 rounded-full bg-emerald-400 text-white grid place-items-center text-[7px] font-bold">✓</span>
               </span>
             </div>
           ))}
         </div>
-      </motion.div>
+      </div>
 
-      {/* Main encounter card */}
-      <div className="relative z-[2] glass-strong rounded-2xl border border-white/10 shadow-2xl overflow-hidden">
+      {/* Main encounter card — the subject */}
+      <div
+        ref={cardRef}
+        className="absolute top-[116px] left-[6%] right-[6%] z-[2] glass-strong rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
+        style={{ transition: 'transform 0.15s ease-out' }}
+      >
         {/* Header */}
-        <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 bg-white/[0.02]">
+        <div className="flex items-center justify-between px-[18px] py-3.5 border-b border-white/10 bg-white/[0.02]">
           <div className="flex items-center gap-2.5 text-[13px] text-slate-300">
-            <span className="font-mono text-[12px] text-white bg-white/10 px-2 py-0.5 rounded">PT-83491</span>
+            <span className="font-mono text-[12px] text-white bg-white/10 px-2 py-0.5 rounded tracking-[-0.01em]">PT-83491</span>
             <span>Established · Internal Med · 22 min</span>
           </div>
-          <div className="flex items-center gap-1.5 text-[11px] text-cyan-400 font-medium uppercase tracking-[0.04em]">
-            <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse" />
+          <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 font-medium uppercase tracking-[0.04em]">
+            <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             Live
           </div>
         </div>
 
         {/* Pipeline stages */}
-        <div className="relative px-4 py-5">
-          {/* Progress line */}
-          <div className="absolute top-[34px] left-[12%] right-[12%] h-[1.5px] bg-white/10" />
-          <motion.div
-            className="absolute top-[34px] left-[12%] h-[1.5px] bg-cyan-400"
-            animate={{ width: progressWidth }}
-            transition={{ duration: 0.8, ease: [0.2, 0.7, 0.2, 1] }}
-            style={{ maxWidth: '76%' }}
+        <div className="relative px-[18px] py-[22px]">
+          <div className="absolute top-[36px] left-[12%] right-[12%] h-[1.5px] bg-white/10" />
+          <div
+            className="absolute top-[36px] left-[12%] h-[1.5px] bg-emerald-400"
+            style={{
+              width: `${stageIndex * widthPerStage}%`,
+              transition: stageIndex === 0 ? 'none' : 'width 1.5s cubic-bezier(.2,.7,.2,1)',
+            }}
           />
-
           <div className="grid grid-cols-5 relative z-[1]">
-            {STAGES.map((stage, i) => {
-              const done = i < activeStage;
-              const active = i === activeStage;
-              const Icon = stage.icon;
+            {['Eligibility', 'Coding', 'Scrub', 'Submit', 'Paid'].map((label, i) => {
+              const done = i < stageIndex;
+              const active = i === stageIndex;
               return (
-                <div key={stage.label} className="flex flex-col items-center gap-2">
-                  <div
-                    className={`w-7 h-7 rounded-full grid place-items-center border-[1.5px] transition-all duration-400 ${
-                      done
-                        ? 'bg-cyan-400 border-cyan-400 text-white'
-                        : active
-                          ? 'bg-transparent border-cyan-400 text-cyan-400 shadow-[0_0_0_3px_rgba(34,211,238,0.15)]'
-                          : 'bg-white/5 border-white/15 text-slate-500'
-                    }`}
-                  >
+                <div key={label} className="flex flex-col items-center gap-2">
+                  <div className={`w-7 h-7 rounded-full grid place-items-center border-[1.5px] transition-all duration-500 ${
+                    done ? 'bg-emerald-400 border-emerald-400 text-white'
+                      : active ? 'bg-transparent border-emerald-400 text-emerald-400 shadow-[0_0_0_3px_rgba(52,211,153,0.15)]'
+                        : 'bg-white/5 border-white/15 text-slate-500'
+                  }`}>
                     {done ? (
                       <Check className="w-3.5 h-3.5" strokeWidth={3} />
                     ) : (
-                      <Icon className="w-3.5 h-3.5" />
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" className="w-3.5 h-3.5">
+                        {i === 0 && <path d="M5 13l4 4L19 7" />}
+                        {i === 1 && <path d="M5 13l4 4L19 7" />}
+                        {i === 2 && <><circle cx="12" cy="12" r="3" /><path d="M12 3v3M12 18v3M3 12h3M18 12h3" /></>}
+                        {i === 3 && <path d="M5 12h14M13 6l6 6-6 6" />}
+                        {i === 4 && <path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />}
+                      </svg>
                     )}
                   </div>
-                  <span
-                    className={`text-[10.5px] font-medium uppercase tracking-[0.02em] transition-colors ${
-                      done || active ? 'text-white' : 'text-slate-500'
-                    }`}
-                  >
-                    {stage.label}
+                  <span className={`text-[10.5px] font-medium uppercase tracking-[0.02em] transition-colors ${done || active ? 'text-white' : 'text-slate-500'}`}>
+                    {label}
                   </span>
                 </div>
               );
@@ -323,37 +355,13 @@ function HeroDashboard() {
         </div>
 
         {/* Activity log */}
-        <div className="px-4 pb-4">
-          <div className="border-t border-white/10 pt-3">
+        <div className="px-[18px] pb-4">
+          <div className="border-t border-white/10 pt-3.5">
             <div className="flex justify-between items-center mb-3">
               <span className="text-[11px] uppercase tracking-[0.08em] text-slate-500 font-medium">Agent activity</span>
               <span className="text-[11px] font-mono text-slate-500 tracking-tight">last 60s</span>
             </div>
-            <div className="flex flex-col gap-2 min-h-[130px]">
-              <AnimatePresence initial={false}>
-                {visibleEntries.map((entry) => (
-                  <motion.div
-                    key={entry.id}
-                    initial={{ opacity: 0, y: 6 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -4 }}
-                    transition={{ duration: 0.35 }}
-                    className="grid items-center gap-2.5 text-[12.5px] text-slate-300"
-                    style={{ gridTemplateColumns: '22px 1fr auto' }}
-                  >
-                    <span className={`w-[22px] h-[22px] rounded-[5px] grid place-items-center font-mono text-[9px] font-medium ${entry.cls}`}>
-                      {entry.tag}
-                    </span>
-                    <div className="flex items-center gap-1.5 min-w-0">
-                      <span className="text-white font-medium">{entry.text}</span>
-                      <span className="text-slate-500">{entry.desc}</span>
-                      <span className="font-mono text-[11px] text-slate-400 bg-white/5 px-1.5 py-px rounded">{entry.code}</span>
-                    </div>
-                    <span className="font-mono text-[10.5px] text-slate-600 tracking-tight">{entry.time}</span>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </div>
+            <div ref={listRef} className="flex flex-col gap-[9px] h-[140px] overflow-hidden" />
           </div>
         </div>
       </div>
