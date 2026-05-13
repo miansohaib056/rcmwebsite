@@ -86,7 +86,7 @@ export default function AIAgents() {
   const activeAgent = agents[activeIdx];
 
   return (
-    <section id="agents" className="relative py-12 md:py-20 overflow-x-hidden">
+    <section id="agents" className="relative py-16 md:py-24 overflow-x-hidden">
       <div className="absolute inset-0 -z-10 grid-bg opacity-60" />
 
       <div className="container-prose">
@@ -110,7 +110,7 @@ export default function AIAgents() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-80px' }}
               transition={{ duration: 0.7 }}
-              className="mt-5 font-display text-[32px] font-bold tracking-tight text-gradient"
+              className="mt-5 font-display text-[26px] leading-[36px] md:text-[34px] md:leading-[44px] font-bold tracking-tight text-gradient"
             >
               Which AI Agents has RCM Automation Developer<br className="hidden md:block" /> to Automate Medical Billing?
             </motion.h2>

@@ -151,7 +151,7 @@ export default function Testimonials() {
   useEffect(() => () => clearTimeout(programmaticTimerRef.current), []);
 
   return (
-    <section className="relative py-12 md:py-20">
+    <section className="relative py-16 md:py-24">
       <div className="container-prose">
         <div className="flex items-end justify-between gap-6 flex-wrap">
           <div className="max-w-3xl">
@@ -172,7 +172,7 @@ export default function Testimonials() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.7 }}
-              className="mt-5 font-display text-[32px] font-bold tracking-tight text-gradient"
+              className="mt-5 font-display text-[26px] leading-[36px] md:text-[34px] md:leading-[44px] font-bold tracking-tight text-gradient"
             >
               What revenue leaders say.
             </motion.h2>

@@ -33,7 +33,7 @@ export default function HowItWorks() {
   const ref = useRef(null);
 
   return (
-    <section id="about" ref={ref} className="relative py-12 md:py-20">
+    <section id="about" ref={ref} className="relative py-16 md:py-24">
       <div className="container-prose grid lg:grid-cols-12 gap-16 items-start">
         <div className="lg:col-span-5 lg:sticky lg:top-32">
           <motion.span
@@ -53,7 +53,7 @@ export default function HowItWorks() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="mt-5 font-display text-[32px] font-bold tracking-tight text-gradient leading-[1.05]"
+            className="mt-5 font-display text-[26px] leading-[36px] md:text-[34px] md:leading-[44px] font-bold tracking-tight text-gradient"
           >
             From manual chaos to autonomous revenue — in days.
           </motion.h2>

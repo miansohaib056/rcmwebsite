@@ -106,10 +106,9 @@ export default function Problems() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="mt-5 font-display text-[32px] font-bold tracking-tight text-gradient max-w-4xl mx-auto leading-[1.1]"
+            className="mt-5 font-display text-[26px] leading-[36px] md:text-[34px] md:leading-[44px] font-bold tracking-tight text-gradient max-w-4xl mx-auto"
           >
-            Why Do Medical Practices Need AI Agents for{' '}
-            <span className="text-gradient-cv">RCM Automation?</span>
+            Why Do Medical Practices Need AI Agents for RCM Automation?
           </motion.h2>
           <motion.p
             initial={{ opacity: 0, y: 20 }}

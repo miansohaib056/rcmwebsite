@@ -3,7 +3,7 @@ import { ArrowRight, PhoneCall, Mail } from 'lucide-react';
 
 export default function CTA() {
   return (
-    <section id="contact" className="relative py-10 md:py-16">
+    <section id="contact" className="relative py-16 md:py-24">
       <div className="container-prose">
         <motion.div
           initial={{ opacity: 0, y: 32 }}
@@ -32,7 +32,7 @@ export default function CTA() {
                 </span>
                 Ready in 14 days
               </span>
-              <h2 className="mt-5 font-display text-[32px] font-bold tracking-tight text-gradient leading-[1.05]">
+              <h2 className="mt-5 font-display text-[26px] leading-[36px] md:text-[34px] md:leading-[44px] font-bold tracking-tight text-gradient">
                 Let our agents take over your billing — and turn delays into dependable revenue.
               </h2>
               <p className="mt-5 text-lg text-slate-300 max-w-2xl">

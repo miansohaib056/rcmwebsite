@@ -56,7 +56,7 @@ export default function ConveyorSection() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.7, delay: 0.1 }}
-            className="mt-5 font-display text-[32px] font-bold tracking-tight text-gradient leading-[1.1]"
+            className="mt-5 font-display text-[26px] leading-[36px] md:text-[34px] md:leading-[44px] font-bold tracking-tight text-gradient"
           >
             Still Stuck Chasing Payments and<br className="hidden md:block" /> Fixing Rejected Claims?
           </motion.h2>

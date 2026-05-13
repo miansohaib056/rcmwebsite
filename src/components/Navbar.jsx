@@ -104,7 +104,7 @@ export default function Navbar() {
                   transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
                   className="absolute right-0 top-full pt-2 w-[320px]"
                 >
-                  <div className="bg-ink-900 border border-white/10 rounded-2xl p-2 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.7)]">
+                  <div className="bg-ink-900 border border-white/10 rounded-2xl p-2 shadow-[0_20px_60px_-12px_rgba(0,0,0,0.7)] flex flex-col gap-1.5">
                   {versions.map((v) => {
                     const isActive = typeof window !== 'undefined' &&
                       (v.href === '/' ? window.location.pathname === '/' : window.location.pathname.startsWith(v.href));

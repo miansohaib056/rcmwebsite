@@ -37,7 +37,7 @@ const stats = [
 
 export default function Stats() {
   return (
-    <section id="results" className="relative py-12 md:py-20">
+    <section id="results" className="relative py-16 md:py-24">
       <div className="absolute inset-0 -z-10 bg-radial-fade opacity-50" />
 
       <div className="container-prose">
@@ -59,7 +59,7 @@ export default function Stats() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="mt-5 font-display text-[32px] font-bold tracking-tight text-gradient"
+            className="mt-5 font-display text-[26px] leading-[36px] md:text-[34px] md:leading-[44px] font-bold tracking-tight text-gradient"
           >
             Results that compound, month over month.
           </motion.h2>

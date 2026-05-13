@@ -88,7 +88,7 @@ export default function Solution() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: '-80px' }}
             transition={{ duration: 0.7 }}
-            className="mt-2 text-center text-[32px] font-bold font-display text-gradient max-w-4xl leading-[1.1] tracking-tight"
+            className="mt-2 text-center text-[26px] leading-[36px] md:text-[34px] md:leading-[44px] font-bold font-display text-gradient max-w-4xl tracking-tight"
           >
             That's why we built RCM Automation,
             <br className="hidden md:block" /> the autonomous AI engine for medical billing

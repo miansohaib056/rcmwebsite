@@ -13,7 +13,7 @@ export default function Showcase() {
   const rotate = useTransform(scrollYProgress, [0, 1], [-4, 4]);
 
   return (
-    <section id="why" ref={ref} className="relative py-12 md:py-20 overflow-hidden">
+    <section id="why" ref={ref} className="relative py-16 md:py-24 overflow-hidden">
       {/* Aurora background */}
       <div className="absolute inset-0 -z-10">
         <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[1100px] h-[600px] rounded-full bg-gradient-to-r from-cyan-500/20 via-blue-500/20 to-violet-500/20 blur-[100px] opacity-70" />
@@ -38,7 +38,7 @@ export default function Showcase() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
-            className="mt-5 font-display text-[32px] font-bold tracking-tight text-gradient"
+            className="mt-5 font-display text-[26px] leading-[36px] md:text-[34px] md:leading-[44px] font-bold tracking-tight text-gradient"
           >
             A neural network for revenue.
           </motion.h2>
