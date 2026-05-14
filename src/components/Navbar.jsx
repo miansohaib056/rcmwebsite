@@ -34,7 +34,7 @@ export default function Navbar() {
   }, [versionsOpen]);
 
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 24);
+    const onScroll = () => setScrolled(window.scrollY > 8);
     onScroll();
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -45,12 +45,12 @@ export default function Navbar() {
       initial={{ y: -32, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
+      className={`fixed top-0 inset-x-0 z-50 transition-[padding] duration-200 ease-out ${
         scrolled ? 'pt-3' : 'pt-5'
       }`}
     >
       <nav
-        className={`mx-auto px-4 md:px-6 max-w-[84rem] flex items-center justify-between rounded-2xl transition-all duration-500 ${
+        className={`mx-auto px-4 md:px-6 max-w-[84rem] flex items-center justify-between rounded-2xl transition-[background-color,backdrop-filter,box-shadow,padding,border-color] duration-200 ease-out ${
           scrolled
             ? 'glass-strong shadow-[0_8px_40px_-12px_rgba(0,0,0,0.6)] py-3 px-4 md:px-6'
             : 'py-4 px-4 md:px-6'

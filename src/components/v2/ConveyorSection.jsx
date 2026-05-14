@@ -192,9 +192,18 @@ function Station({ station, index, active }) {
 
 function ClaimCard({ seed, indexOffset, totalWidth }) {
   const [stageIdx, setStageIdx] = useState(-1);
+  const [cardWidth, setCardWidth] = useState(160);
   const stationCount = STATIONS.length;
   const cycleDuration = 14;
   const delay = (indexOffset * cycleDuration) / stationCount;
+
+  // Responsive card width: 130px on mobile, 160px on tablet+
+  useEffect(() => {
+    const update = () => setCardWidth(window.innerWidth < 640 ? 130 : 160);
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, []);
 
   useEffect(() => {
     let raf;
@@ -235,25 +244,25 @@ function ClaimCard({ seed, indexOffset, totalWidth }) {
 
   return (
     <div
-      className={`absolute top-[68%] -translate-y-1/2 rounded-xl border px-3.5 py-2.5 backdrop-blur-md transition-colors duration-500 ${tone}`}
+      className={`absolute top-[68%] -translate-y-1/2 rounded-xl border px-2.5 sm:px-3.5 py-2 sm:py-2.5 backdrop-blur-md transition-colors duration-500 ${tone}`}
       style={{
-        width: 160,
+        width: cardWidth,
         animation: `conveyorMove ${cycleDuration}s linear infinite`,
         animationDelay: `-${delay}s`,
         willChange: 'transform',
       }}
     >
-      <div className="flex items-center justify-between mb-1">
-        <span className="text-[10px] font-mono text-slate-300 tracking-tight">{seed.id}</span>
-        <span className={`text-[9px] font-mono px-1.5 py-0.5 rounded border ${stampTone} tracking-[0.06em] uppercase`}>
+      <div className="flex items-center justify-between gap-1 mb-1">
+        <span className="text-[9px] sm:text-[10px] font-mono text-slate-300 tracking-tight truncate">{seed.id}</span>
+        <span className={`text-[8px] sm:text-[9px] font-mono px-1 sm:px-1.5 py-0.5 rounded border ${stampTone} tracking-[0.06em] uppercase shrink-0`}>
           {isFinal ? 'PAID' : current?.stamp?.split(' ')[0] || 'NEW'}
         </span>
       </div>
-      <div className="flex items-baseline justify-between">
-        <span className={`font-display font-bold text-[15px] tabular-nums ${isFinal ? 'text-emerald-300' : 'text-white'}`}>
+      <div className="flex items-baseline justify-between gap-1">
+        <span className={`font-display font-bold text-[13px] sm:text-[15px] tabular-nums ${isFinal ? 'text-emerald-300' : 'text-white'}`}>
           {seed.amount}
         </span>
-        <span className="text-[10px] text-slate-500 tracking-tight">{seed.payer}</span>
+        <span className="text-[9px] sm:text-[10px] text-slate-500 tracking-tight truncate">{seed.payer}</span>
       </div>
       <div className="mt-1.5 h-[3px] rounded-full bg-white/[0.06] overflow-hidden">
         <div
