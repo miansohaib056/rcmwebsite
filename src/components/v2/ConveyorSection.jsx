@@ -133,7 +133,7 @@ function Conveyor() {
       </div>
 
       {/* Conveyor body */}
-      <div ref={trackRef} className="relative h-[260px] md:h-[290px]">
+      <div ref={trackRef} className="relative h-[230px] sm:h-[260px] md:h-[290px]">
         <div className="absolute left-0 right-0 top-[68%] h-px bg-gradient-to-r from-transparent via-white/15 to-transparent" />
         <div className="absolute left-0 right-0 top-[68%] h-2 -translate-y-1/2 flex items-center px-[4%]">
           {Array.from({ length: 28 }).map((_, i) => (
@@ -143,7 +143,7 @@ function Conveyor() {
           ))}
         </div>
 
-        <div className="absolute inset-x-4 md:inset-x-7 top-0 grid grid-cols-7">
+        <div className="absolute inset-x-2 sm:inset-x-4 md:inset-x-7 top-0 grid grid-cols-7">
           {STATIONS.map((s, i) => (
             <Station key={s.name} station={s} index={i} active={i === activeStation} />
           ))}
@@ -157,7 +157,7 @@ function Conveyor() {
       </div>
 
       {/* Bottom strip */}
-      <div className="grid grid-cols-3 divide-x divide-white/[0.06] border-t border-white/[0.06] bg-black/20">
+      <div className="grid grid-cols-1 sm:grid-cols-3 divide-y sm:divide-y-0 sm:divide-x divide-white/[0.06] border-t border-white/[0.06] bg-black/20">
         <BottomCell label="Claims this hour" value="847" delta="↑ live" tone="emerald" />
         <BottomCell label="Avg cycle time" value="4.2s" delta="end-to-end" tone="cyan" />
         <BottomCell label="Clean pass rate" value="99.4%" delta="↑ +0.6 vs 30d" tone="emerald" />
@@ -169,23 +169,23 @@ function Conveyor() {
 function Station({ station, index, active }) {
   const Icon = station.icon;
   return (
-    <div className="flex flex-col items-center pt-5 md:pt-6 relative">
-      <div className="text-[9.5px] font-mono tracking-[0.16em] text-slate-500 mb-1.5">0{index + 1}</div>
+    <div className="flex flex-col items-center pt-4 md:pt-6 relative px-0.5">
+      <div className="hidden sm:block text-[9.5px] font-mono tracking-[0.16em] text-slate-500 mb-1.5">0{index + 1}</div>
       <div
-        className={`relative w-9 h-9 md:w-11 md:h-11 rounded-xl grid place-items-center transition-all duration-500 ${
+        className={`relative w-8 h-8 sm:w-9 sm:h-9 md:w-11 md:h-11 rounded-lg sm:rounded-xl grid place-items-center transition-all duration-500 ${
           active
             ? 'bg-emerald-400 text-emerald-950 shadow-[0_0_30px_-2px_rgba(16,185,129,0.6)] scale-105'
             : 'bg-white/[0.04] text-slate-400 border border-white/[0.08]'
         }`}
       >
-        <Icon className="w-4 h-4 md:w-5 md:h-5" strokeWidth={active ? 2.5 : 1.8} />
+        <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 md:w-5 md:h-5" strokeWidth={active ? 2.5 : 1.8} />
         {active && (
           <span className="absolute -top-1 -right-1 w-2 h-2 rounded-full bg-emerald-400 animate-ping" />
         )}
       </div>
-      <div className="mt-2 text-[11px] md:text-[12.5px] font-display font-bold text-white tracking-tight">{station.name}</div>
-      <div className="text-[9.5px] md:text-[10.5px] text-slate-500 tracking-tight">{station.role}</div>
-      <div className="absolute top-[78px] md:top-[90px] left-1/2 -translate-x-1/2 w-px h-[14px] md:h-[18px] bg-gradient-to-b from-white/15 to-transparent" />
+      <div className="mt-1.5 sm:mt-2 text-[10px] sm:text-[11px] md:text-[12.5px] font-display font-bold text-white tracking-tight text-center leading-tight">{station.name}</div>
+      <div className="hidden sm:block text-[9.5px] md:text-[10.5px] text-slate-500 tracking-tight text-center leading-tight">{station.role}</div>
+      <div className="absolute top-[60px] sm:top-[78px] md:top-[90px] left-1/2 -translate-x-1/2 w-px h-[14px] md:h-[18px] bg-gradient-to-b from-white/15 to-transparent" />
     </div>
   );
 }

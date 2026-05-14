@@ -155,7 +155,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden container-prose mt-3"
+            className="md:hidden mx-auto px-4 max-w-[84rem] mt-3"
           >
             <div className="glass-strong rounded-2xl p-2">
               {links.map((l) => (

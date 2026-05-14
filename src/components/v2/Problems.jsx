@@ -52,25 +52,33 @@ const problems = [
 
 export default function Problems() {
   const sectionRef = useRef(null);
+  const stickyRef = useRef(null);
   const trackRef = useRef(null);
   const [shift, setShift] = useState(1200);
+  const [pinHeight, setPinHeight] = useState(720);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start start', 'end end'],
   });
 
+  // Measure horizontal scroll runway + pinned-content height
   useEffect(() => {
     const update = () => {
-      if (!trackRef.current) return;
-      const trackWidth = trackRef.current.scrollWidth;
-      const visibleWidth = window.innerWidth;
-      setShift(Math.max(400, trackWidth - visibleWidth));
+      if (trackRef.current) {
+        const trackWidth = trackRef.current.scrollWidth;
+        const visibleWidth = window.innerWidth;
+        setShift(Math.max(400, trackWidth - visibleWidth));
+      }
+      if (stickyRef.current) {
+        setPinHeight(stickyRef.current.offsetHeight);
+      }
     };
     update();
     window.addEventListener('resize', update);
     const ro = new ResizeObserver(update);
     if (trackRef.current) ro.observe(trackRef.current);
+    if (stickyRef.current) ro.observe(stickyRef.current);
     return () => {
       window.removeEventListener('resize', update);
       ro.disconnect();
@@ -83,9 +91,10 @@ export default function Problems() {
     <section
       ref={sectionRef}
       className="relative"
-      style={{ height: `calc(100vh + ${shift}px)` }}
+      // Total scroll range = content height + horizontal shift runway. No extra slack.
+      style={{ height: `${pinHeight + shift}px` }}
     >
-      <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden py-12 md:py-16">
+      <div ref={stickyRef} className="sticky top-0 flex flex-col overflow-hidden py-16 md:py-24">
         {/* Header */}
         <div className="container-prose text-center">
           <motion.span

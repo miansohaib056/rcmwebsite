@@ -34,7 +34,7 @@ export default function HowItWorks() {
 
   return (
     <section id="about" ref={ref} className="relative py-16 md:py-24">
-      <div className="container-prose grid lg:grid-cols-12 gap-16 items-start">
+      <div className="container-prose grid lg:grid-cols-12 gap-10 lg:gap-16 items-start">
         <div className="lg:col-span-5 lg:sticky lg:top-32">
           <motion.span
             initial={{ opacity: 0, y: 16 }}
@@ -92,7 +92,7 @@ export default function HowItWorks() {
 
         <ol className="lg:col-span-7 relative">
           {/* connecting line */}
-          <div className="absolute left-[26px] top-2 bottom-2 w-px bg-gradient-to-b from-cyan-400/60 via-violet-500/40 to-transparent" />
+          <div className="absolute left-[22px] sm:left-[26px] top-2 bottom-2 w-px bg-gradient-to-b from-cyan-400/60 via-violet-500/40 to-transparent" />
 
           {steps.map((s, i) => (
             <motion.li
@@ -101,16 +101,16 @@ export default function HowItWorks() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true, margin: '-100px' }}
               transition={{ duration: 0.7, delay: i * 0.1, ease: [0.22, 1, 0.36, 1] }}
-              className="relative pl-20 pb-12 last:pb-0"
+              className="relative pl-16 sm:pl-20 pb-10 sm:pb-12 last:pb-0"
             >
-              <div className="absolute left-0 top-0 w-[54px] h-[54px] rounded-full glass grid place-items-center font-mono text-sm text-cyan-300 ring-1 ring-cyan-400/20 shadow-glow">
+              <div className="absolute left-0 top-0 w-[46px] h-[46px] sm:w-[54px] sm:h-[54px] rounded-full glass grid place-items-center font-mono text-xs sm:text-sm text-cyan-300 ring-1 ring-cyan-400/20 shadow-glow">
                 {s.n}
               </div>
-              <div className="glass rounded-2xl p-6">
-                <h3 className="font-display text-2xl font-bold text-white tracking-tight">
+              <div className="glass rounded-2xl p-5 sm:p-6">
+                <h3 className="font-display text-xl sm:text-2xl font-bold text-white tracking-tight">
                   {s.title}
                 </h3>
-                <p className="mt-2 text-slate-300/90 leading-relaxed">{s.body}</p>
+                <p className="mt-2 text-slate-300/90 leading-relaxed text-sm sm:text-base">{s.body}</p>
                 {i === steps.length - 1 && (
                   <div className="mt-4 flex items-center gap-2 text-emerald-300 text-sm">
                     <CheckCircle2 className="w-4 h-4" /> Average go-live: 14 days

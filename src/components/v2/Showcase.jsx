@@ -56,10 +56,10 @@ export default function Showcase() {
         </div>
 
         {/* 3D-style orbital visual */}
-        <div className="relative mt-14 mx-auto max-w-5xl perspective-1000">
+        <div className="relative mt-10 md:mt-14 mx-auto max-w-5xl perspective-1000">
           <motion.div
             style={{ rotate, y: y1 }}
-            className="relative aspect-[16/10] glass-strong rounded-[2rem] p-6 md:p-10 shadow-[0_60px_120px_-40px_rgba(34,211,238,0.35)] gpu"
+            className="relative aspect-[4/3] sm:aspect-[16/10] glass-strong rounded-2xl sm:rounded-[2rem] p-4 sm:p-6 md:p-10 shadow-[0_60px_120px_-40px_rgba(34,211,238,0.35)] gpu"
           >
             {/* concentric rings */}
             <div className="absolute inset-0 grid place-items-center pointer-events-none">
@@ -83,46 +83,46 @@ export default function Showcase() {
               <motion.div
                 animate={{ scale: [1, 1.03, 1] }}
                 transition={{ duration: 4, repeat: Infinity, ease: 'easeInOut' }}
-                className="relative w-44 h-44 md:w-56 md:h-56"
+                className="relative w-32 h-32 sm:w-40 sm:h-40 md:w-56 md:h-56"
               >
                 <div className="absolute inset-0 rounded-full bg-gradient-to-br from-cyan-400 via-blue-500 to-violet-600 blur-2xl opacity-60 animate-pulse-slow" />
                 <div className="absolute inset-2 rounded-full bg-gradient-to-br from-cyan-400 to-violet-600 opacity-90" />
                 <div className="absolute inset-3 rounded-full bg-ink-950" />
                 <div className="absolute inset-0 grid place-items-center">
-                  <Cpu className="w-12 h-12 md:w-14 md:h-14 text-white" />
+                  <Cpu className="w-9 h-9 sm:w-11 sm:h-11 md:w-14 md:h-14 text-white" />
                 </div>
                 <div className="absolute -inset-3 rounded-full border border-white/10" />
                 <div className="absolute -inset-6 rounded-full border border-white/5" />
               </motion.div>
             </div>
 
-            {/* Orbiting nodes */}
+            {/* Orbiting nodes — hide 2 on smallest screens to avoid overlap */}
             <Orbital
               icon={Activity}
               label="Eligibility"
               value="4,812 verified"
-              className="absolute top-6 left-6"
+              className="absolute top-3 left-3 sm:top-6 sm:left-6"
               delay={0}
             />
             <Orbital
               icon={Database}
               label="Coding"
               value="ICD-10 · CPT"
-              className="absolute top-10 right-6"
+              className="absolute top-3 right-3 sm:top-10 sm:right-6"
               delay={0.5}
             />
             <Orbital
               icon={Network}
               label="Submissions"
               value="99.99% clean"
-              className="absolute bottom-10 left-10"
+              className="absolute bottom-3 left-3 sm:bottom-10 sm:left-10 hidden xs:flex sm:flex"
               delay={1}
             />
             <Orbital
               icon={Zap}
               label="Auth"
               value="2.1s avg"
-              className="absolute bottom-6 right-12"
+              className="absolute bottom-3 right-3 sm:bottom-6 sm:right-12"
               delay={1.5}
             />
           </motion.div>
@@ -164,14 +164,14 @@ function Orbital({ icon: Icon, label, value, className, delay = 0 }) {
     <motion.div
       animate={{ y: [0, -8, 0] }}
       transition={{ duration: 4 + delay, repeat: Infinity, ease: 'easeInOut', delay }}
-      className={`glass rounded-2xl p-3 flex items-center gap-3 ${className}`}
+      className={`glass rounded-xl sm:rounded-2xl p-2 sm:p-3 flex items-center gap-2 sm:gap-3 ${className}`}
     >
-      <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-cyan-400 to-violet-500 grid place-items-center">
-        <Icon className="w-4 h-4 text-white" />
+      <div className="w-7 h-7 sm:w-9 sm:h-9 rounded-lg sm:rounded-xl bg-gradient-to-br from-cyan-400 to-violet-500 grid place-items-center shrink-0">
+        <Icon className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-white" />
       </div>
-      <div>
-        <div className="text-[10px] uppercase tracking-widest text-slate-400">{label}</div>
-        <div className="text-xs text-white font-medium">{value}</div>
+      <div className="min-w-0">
+        <div className="text-[9px] sm:text-[10px] uppercase tracking-widest text-slate-400 truncate">{label}</div>
+        <div className="text-[11px] sm:text-xs text-white font-medium truncate">{value}</div>
       </div>
     </motion.div>
   );

@@ -10,11 +10,11 @@ export default function CTA() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-80px' }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="relative isolate overflow-hidden rounded-[2.5rem] p-10 md:p-16"
+          className="relative isolate overflow-hidden rounded-3xl md:rounded-[2.5rem] p-6 sm:p-10 md:p-16"
         >
           {/* gradient frame */}
-          <div className="absolute inset-0 rounded-[2.5rem] bg-gradient-to-br from-cyan-500/20 via-blue-500/10 to-violet-500/20" />
-          <div className="absolute inset-[1px] rounded-[2.45rem] bg-ink-950/95 backdrop-blur-xl" />
+          <div className="absolute inset-0 rounded-3xl md:rounded-[2.5rem] bg-gradient-to-br from-cyan-500/20 via-blue-500/10 to-violet-500/20" />
+          <div className="absolute inset-[1px] rounded-3xl md:rounded-[2.45rem] bg-ink-950/95 backdrop-blur-xl" />
 
           {/* glows */}
           <div className="absolute -top-32 left-1/4 w-[520px] h-[520px] rounded-full bg-cyan-500/20 blur-[100px]" />
@@ -40,12 +40,12 @@ export default function CTA() {
                 revenue lift, and show you exactly which agents will deliver it.
               </p>
 
-              <div className="mt-9 flex flex-wrap items-center gap-3">
-                <a href="#contact" className="btn-primary group">
+              <div className="mt-7 md:mt-9 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3">
+                <a href="#contact" className="btn-primary group w-full sm:w-auto">
                   Book Your Free Consultation
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </a>
-                <a href="tel:+12147642345" className="btn-ghost">
+                <a href="tel:+12147642345" className="btn-ghost w-full sm:w-auto">
                   <PhoneCall className="w-4 h-4 text-cyan-300" />
                   +1 (214) 764-2345
                 </a>

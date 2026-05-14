@@ -26,7 +26,7 @@ export default function Hero() {
   return (
     <section
       id="top"
-      className="relative isolate min-h-[92svh] flex items-center pt-24 pb-10 md:pt-28 md:pb-16 overflow-hidden"
+      className="relative isolate min-h-[92svh] flex items-center pt-24 pb-12 md:pt-28 md:pb-16 overflow-hidden"
     >
       {/* Background layers */}
       <CircuitBackground />
@@ -34,7 +34,7 @@ export default function Hero() {
       <div className="pointer-events-none absolute top-1/3 -left-32 w-[420px] h-[420px] rounded-full bg-cyan-500/15 blur-[90px]" />
       <div className="pointer-events-none absolute bottom-0 -right-24 w-[480px] h-[480px] rounded-full bg-violet-500/15 blur-[90px]" />
 
-      <div className="container-prose relative z-10 grid lg:grid-cols-12 gap-14 items-center">
+      <div className="container-prose relative z-10 grid lg:grid-cols-12 gap-10 lg:gap-14 items-center">
         {/* Copy */}
         <div className="lg:col-span-7 text-center lg:text-left">
           <motion.div
@@ -56,7 +56,7 @@ export default function Hero() {
             initial="hidden"
             animate="show"
             custom={1}
-            className="mt-6 font-display text-[40px] leading-[1.2] font-bold tracking-tight text-gradient"
+            className="mt-6 font-display text-[28px] leading-[1.2] sm:text-[34px] sm:leading-[1.18] md:text-[40px] md:leading-[1.15] font-bold tracking-tight text-gradient"
           >
             RCM Automation with Advanced AI Agents{' '}
             <span className="font-light text-slate-500/70 mx-1">|</span>{' '}
@@ -68,7 +68,7 @@ export default function Hero() {
             initial="hidden"
             animate="show"
             custom={2}
-            className="mt-7 text-lg md:text-xl text-slate-300/90 max-w-2xl lg:mx-0 mx-auto"
+            className="mt-5 md:mt-7 text-base sm:text-lg md:text-xl text-slate-300/90 max-w-2xl lg:mx-0 mx-auto"
           >
             RCM Automation uses powerful AI agents for medical billing to replace manual billing
             tasks. These AI RCM agents automate eligibility verification, coding, denial follow-ups,
@@ -81,13 +81,13 @@ export default function Hero() {
             initial="hidden"
             animate="show"
             custom={3}
-            className="mt-9 flex flex-wrap items-center gap-3 lg:justify-start justify-center"
+            className="mt-7 md:mt-9 flex flex-col sm:flex-row sm:flex-wrap items-stretch sm:items-center gap-3 lg:justify-start justify-center"
           >
-            <a href="#contact" className="btn-primary group">
+            <a href="#contact" className="btn-primary group w-full sm:w-auto">
               Book Your Free Consultation
               <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
             </a>
-            <a href="#agents" className="btn-ghost group">
+            <a href="#agents" className="btn-ghost group w-full sm:w-auto">
               Meet the AI Agents
               <Sparkles className="w-4 h-4 text-cyan-300 transition-transform group-hover:rotate-12" />
             </a>
@@ -98,7 +98,7 @@ export default function Hero() {
             initial="hidden"
             animate="show"
             custom={4}
-            className="mt-10 grid sm:grid-cols-3 gap-3 max-w-2xl lg:mx-0 mx-auto"
+            className="mt-8 md:mt-10 grid sm:grid-cols-3 gap-3 max-w-2xl lg:mx-0 mx-auto"
           >
             {[
               { icon: CheckCircle2, label: 'Instant Coding Validation' },
@@ -231,7 +231,7 @@ function HeroVisual() {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative h-[580px]">
+    <div ref={containerRef} className="relative h-[520px] sm:h-[560px] md:h-[580px] mx-auto max-w-[480px] lg:max-w-none">
       {/* Decorative grid — context layer */}
       <div
         className="absolute -inset-10 opacity-50 pointer-events-none"
@@ -246,7 +246,7 @@ function HeroVisual() {
       {/* Floating: Risk score (Scrubber) — breaks frame top-right */}
       <div
         ref={riskRef}
-        className="absolute -top-2 -right-6 z-10 glass rounded-xl p-3.5 shadow-lg border border-white/10 w-[168px] opacity-0 animate-[heroFloat_0.7s_cubic-bezier(.2,.7,.2,1)_1.1s_forwards]"
+        className="absolute -top-2 right-0 sm:-right-2 lg:-right-6 z-10 glass rounded-xl p-3 sm:p-3.5 shadow-lg border border-white/10 w-[150px] sm:w-[168px] opacity-0 animate-[heroFloat_0.7s_cubic-bezier(.2,.7,.2,1)_1.1s_forwards]"
         style={{ transition: 'transform 0.15s ease-out' }}
       >
         <div className="flex items-center justify-between mb-2">
@@ -269,7 +269,7 @@ function HeroVisual() {
       {/* Floating: Code set (CODIN) — breaks frame bottom-left */}
       <div
         ref={codesRef}
-        className="absolute -bottom-2 -left-6 z-10 glass rounded-xl p-3.5 shadow-lg border border-white/10 w-[200px] opacity-0 animate-[heroFloat_0.7s_cubic-bezier(.2,.7,.2,1)_1.3s_forwards]"
+        className="absolute -bottom-2 left-0 sm:-left-2 lg:-left-6 z-10 glass rounded-xl p-3 sm:p-3.5 shadow-lg border border-white/10 w-[170px] sm:w-[200px] opacity-0 animate-[heroFloat_0.7s_cubic-bezier(.2,.7,.2,1)_1.3s_forwards]"
         style={{ transition: 'transform 0.15s ease-out' }}
       >
         <div className="flex items-center justify-between mb-2.5">
@@ -297,23 +297,23 @@ function HeroVisual() {
       {/* Main encounter card — the subject */}
       <div
         ref={cardRef}
-        className="absolute top-[116px] left-[6%] right-[6%] z-[2] glass-strong rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
+        className="absolute top-[90px] sm:top-[110px] md:top-[116px] left-[6%] right-[6%] z-[2] glass-strong rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
         style={{ transition: 'transform 0.15s ease-out' }}
       >
         {/* Header */}
-        <div className="flex items-center justify-between px-[18px] py-3.5 border-b border-white/10 bg-white/[0.02]">
-          <div className="flex items-center gap-2.5 text-[13px] text-slate-300">
-            <span className="font-mono text-[12px] text-white bg-white/10 px-2 py-0.5 rounded tracking-[-0.01em]">PT-83491</span>
-            <span>Established · Internal Med · 22 min</span>
+        <div className="flex items-center justify-between gap-2 px-3 sm:px-[18px] py-3 sm:py-3.5 border-b border-white/10 bg-white/[0.02]">
+          <div className="flex items-center gap-2 sm:gap-2.5 text-[12px] sm:text-[13px] text-slate-300 min-w-0">
+            <span className="font-mono text-[11px] sm:text-[12px] text-white bg-white/10 px-1.5 sm:px-2 py-0.5 rounded tracking-[-0.01em] shrink-0">PT-83491</span>
+            <span className="truncate">Established · Internal Med · 22 min</span>
           </div>
-          <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 font-medium uppercase tracking-[0.04em]">
+          <div className="flex items-center gap-1.5 text-[11px] text-emerald-400 font-medium uppercase tracking-[0.04em] shrink-0">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
             Live
           </div>
         </div>
 
         {/* Pipeline stages */}
-        <div className="relative px-[18px] py-[22px]">
+        <div className="relative px-3 sm:px-[18px] py-4 sm:py-[22px]">
           <div className="absolute top-[36px] left-[12%] right-[12%] h-[1.5px] bg-white/10" />
           <div
             className="absolute top-[36px] left-[12%] h-[1.5px] bg-emerald-400"
@@ -355,13 +355,13 @@ function HeroVisual() {
         </div>
 
         {/* Activity log */}
-        <div className="px-[18px] pb-4">
-          <div className="border-t border-white/10 pt-3.5">
-            <div className="flex justify-between items-center mb-3">
+        <div className="px-3 sm:px-[18px] pb-3 sm:pb-4">
+          <div className="border-t border-white/10 pt-3 sm:pt-3.5">
+            <div className="flex justify-between items-center mb-2.5 sm:mb-3">
               <span className="text-[11px] uppercase tracking-[0.08em] text-slate-500 font-medium">Agent activity</span>
               <span className="text-[11px] font-mono text-slate-500 tracking-tight">last 60s</span>
             </div>
-            <div ref={listRef} className="flex flex-col gap-[9px] h-[140px] overflow-hidden" />
+            <div ref={listRef} className="flex flex-col gap-[9px] h-[110px] sm:h-[125px] md:h-[140px] overflow-hidden" />
           </div>
         </div>
       </div>

@@ -77,23 +77,23 @@ export default function Stats() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="mt-10 glass-strong rounded-3xl p-8 md:p-10 grid md:grid-cols-3 gap-8 items-center"
+          className="mt-10 glass-strong rounded-3xl p-6 sm:p-8 md:p-10 grid grid-cols-1 sm:grid-cols-3 gap-6 sm:gap-8 items-center"
         >
-          <div className="text-center md:text-left">
-            <div className="font-display text-5xl font-bold text-gradient-cv">1,000+</div>
-            <div className="text-slate-400 mt-1 text-sm uppercase tracking-wider">
+          <div className="text-center sm:text-left">
+            <div className="font-display text-4xl sm:text-5xl font-bold text-gradient-cv">1,000+</div>
+            <div className="text-slate-400 mt-1 text-xs sm:text-sm uppercase tracking-wider">
               Provider clients
             </div>
           </div>
           <div className="text-center">
-            <div className="font-display text-5xl font-bold text-gradient-cv">1,000+</div>
-            <div className="text-slate-400 mt-1 text-sm uppercase tracking-wider">
+            <div className="font-display text-4xl sm:text-5xl font-bold text-gradient-cv">1,000+</div>
+            <div className="text-slate-400 mt-1 text-xs sm:text-sm uppercase tracking-wider">
               Five-star reviews
             </div>
           </div>
-          <div className="text-center md:text-right">
-            <div className="font-display text-5xl font-bold text-gradient-cv">98%</div>
-            <div className="text-slate-400 mt-1 text-sm uppercase tracking-wider">
+          <div className="text-center sm:text-right">
+            <div className="font-display text-4xl sm:text-5xl font-bold text-gradient-cv">98%</div>
+            <div className="text-slate-400 mt-1 text-xs sm:text-sm uppercase tracking-wider">
               Customer retention
             </div>
           </div>
