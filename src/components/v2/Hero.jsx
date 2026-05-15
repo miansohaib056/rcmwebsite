@@ -251,7 +251,7 @@ function HeroVisual() {
         ref={riskRef}
         className="absolute z-10 glass rounded-xl p-3 sm:p-3.5 shadow-lg border border-white/10 w-[150px] sm:w-[168px] opacity-0 animate-[heroFloat_0.7s_cubic-bezier(.2,.7,.2,1)_1.1s_forwards]"
         style={{
-          top: '12px',
+          top: '-40px',
           right: 'calc(6% - 16px)',
           transition: 'transform 0.15s ease-out',
         }}
@@ -279,7 +279,7 @@ function HeroVisual() {
         ref={codesRef}
         className="absolute z-10 glass rounded-xl p-3 sm:p-3.5 shadow-lg border border-white/10 w-[170px] sm:w-[200px] opacity-0 animate-[heroFloat_0.7s_cubic-bezier(.2,.7,.2,1)_1.3s_forwards]"
         style={{
-          bottom: '12px',
+          bottom: '-55px',
           left: 'calc(6% - 16px)',
           transition: 'transform 0.15s ease-out',
         }}
