@@ -45,7 +45,7 @@ export default function Navbar() {
       initial={{ y: -32, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
-      className={`fixed top-0 inset-x-0 z-50 transition-[padding] duration-200 ease-out ${
+      className={`fixed top-0 inset-x-0 z-50 px-4 lg:px-0 transition-[padding] duration-200 ease-out ${
         scrolled ? 'pt-3' : 'pt-5'
       }`}
     >
@@ -155,7 +155,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="lg:hidden mx-auto px-4 max-w-[84rem] mt-3"
+            className="lg:hidden mx-auto max-w-[84rem] mt-3"
           >
             <div className="glass-strong rounded-2xl p-2">
               {links.map((l) => (
