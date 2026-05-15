@@ -243,11 +243,18 @@ function HeroVisual() {
         }}
       />
 
-      {/* Floating: Risk score (Scrubber) — breaks frame top-right */}
+      {/* Floating: Risk score (Scrubber) — breaks frame top-right.
+          Position is calc(6%-16px) so the card always overhangs the
+          encounter card's right edge (which sits at right:6%) by ~16px
+          on every screen size — visually identical to the desktop look. */}
       <div
         ref={riskRef}
-        className="absolute -top-2 right-0 sm:-right-2 lg:-right-6 z-10 glass rounded-xl p-3 sm:p-3.5 shadow-lg border border-white/10 w-[150px] sm:w-[168px] opacity-0 animate-[heroFloat_0.7s_cubic-bezier(.2,.7,.2,1)_1.1s_forwards]"
-        style={{ transition: 'transform 0.15s ease-out' }}
+        className="absolute z-10 glass rounded-xl p-3 sm:p-3.5 shadow-lg border border-white/10 w-[150px] sm:w-[168px] opacity-0 animate-[heroFloat_0.7s_cubic-bezier(.2,.7,.2,1)_1.1s_forwards]"
+        style={{
+          top: '-8px',
+          right: 'calc(6% - 16px)',
+          transition: 'transform 0.15s ease-out',
+        }}
       >
         <div className="flex items-center justify-between mb-2">
           <span className="text-[10.5px] uppercase tracking-[0.08em] text-slate-400 font-medium">Risk score</span>
@@ -266,11 +273,17 @@ function HeroVisual() {
         </div>
       </div>
 
-      {/* Floating: Code set (CODIN) — breaks frame bottom-left */}
+      {/* Floating: Code set (CODIN) — breaks frame bottom-left.
+          Same calc(6%-16px) trick so it consistently overhangs the
+          encounter card's left edge by ~16px across all viewports. */}
       <div
         ref={codesRef}
-        className="absolute -bottom-2 left-0 sm:-left-2 lg:-left-6 z-10 glass rounded-xl p-3 sm:p-3.5 shadow-lg border border-white/10 w-[170px] sm:w-[200px] opacity-0 animate-[heroFloat_0.7s_cubic-bezier(.2,.7,.2,1)_1.3s_forwards]"
-        style={{ transition: 'transform 0.15s ease-out' }}
+        className="absolute z-10 glass rounded-xl p-3 sm:p-3.5 shadow-lg border border-white/10 w-[170px] sm:w-[200px] opacity-0 animate-[heroFloat_0.7s_cubic-bezier(.2,.7,.2,1)_1.3s_forwards]"
+        style={{
+          bottom: '-8px',
+          left: 'calc(6% - 16px)',
+          transition: 'transform 0.15s ease-out',
+        }}
       >
         <div className="flex items-center justify-between mb-2.5">
           <span className="text-[10.5px] uppercase tracking-[0.08em] text-slate-400 font-medium">Code set</span>
