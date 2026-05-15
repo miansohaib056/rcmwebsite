@@ -231,7 +231,7 @@ function HeroVisual() {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative h-[520px] sm:h-[560px] md:h-[580px] mx-auto max-w-[480px] lg:max-w-none">
+    <div ref={containerRef} className="relative mx-auto max-w-[480px] lg:max-w-none py-[60px] sm:py-[70px]">
       {/* Decorative grid — context layer */}
       <div
         className="absolute -inset-10 opacity-50 pointer-events-none"
@@ -243,15 +243,15 @@ function HeroVisual() {
         }}
       />
 
-      {/* Floating: Risk score (Scrubber) — breaks frame top-right.
-          Position is calc(6%-16px) so the card always overhangs the
-          encounter card's right edge (which sits at right:6%) by ~16px
-          on every screen size — visually identical to the desktop look. */}
+      {/* Floating: Risk score (Scrubber) — hangs at encounter card's
+          top-right corner. Sits ~50% above the encounter card edge so
+          half of it overhangs visibly. right: calc(6%-16px) overhangs
+          the right edge by 16px (encounter card has 6% margin). */}
       <div
         ref={riskRef}
         className="absolute z-10 glass rounded-xl p-3 sm:p-3.5 shadow-lg border border-white/10 w-[150px] sm:w-[168px] opacity-0 animate-[heroFloat_0.7s_cubic-bezier(.2,.7,.2,1)_1.1s_forwards]"
         style={{
-          top: '-8px',
+          top: '12px',
           right: 'calc(6% - 16px)',
           transition: 'transform 0.15s ease-out',
         }}
@@ -273,14 +273,13 @@ function HeroVisual() {
         </div>
       </div>
 
-      {/* Floating: Code set (CODIN) — breaks frame bottom-left.
-          Same calc(6%-16px) trick so it consistently overhangs the
-          encounter card's left edge by ~16px across all viewports. */}
+      {/* Floating: Code set (CODIN) — hangs at encounter card's
+          bottom-left corner. Sits ~50% below the encounter card edge. */}
       <div
         ref={codesRef}
         className="absolute z-10 glass rounded-xl p-3 sm:p-3.5 shadow-lg border border-white/10 w-[170px] sm:w-[200px] opacity-0 animate-[heroFloat_0.7s_cubic-bezier(.2,.7,.2,1)_1.3s_forwards]"
         style={{
-          bottom: '-8px',
+          bottom: '12px',
           left: 'calc(6% - 16px)',
           transition: 'transform 0.15s ease-out',
         }}
@@ -307,10 +306,13 @@ function HeroVisual() {
         </div>
       </div>
 
-      {/* Main encounter card — the subject */}
+      {/* Main encounter card — the subject. Relative so it dictates the
+          container's natural height; the floating cards then hang at its
+          actual corners via top:-8 / bottom:-8 (instead of floating in a
+          fixed-height container's empty space). */}
       <div
         ref={cardRef}
-        className="absolute top-[90px] sm:top-[110px] md:top-[116px] left-[6%] right-[6%] z-[2] glass-strong rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
+        className="relative mx-[6%] z-[2] glass-strong rounded-2xl border border-white/10 shadow-2xl overflow-hidden"
         style={{ transition: 'transform 0.15s ease-out' }}
       >
         {/* Header */}
