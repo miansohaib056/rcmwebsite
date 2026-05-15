@@ -242,10 +242,12 @@
     50% { transform: translateX(100%); }
   }
 
-  /* HeroV2 — conveyor belt motion */
+  /* HeroV2 — conveyor belt motion. Cards travel from --conveyor-start
+     to --conveyor-end, both set by the React component based on the
+     actual conveyor body width (so cards don't overshoot on desktop). */
   @keyframes conveyorMove {
-    from { transform: translate3d(-180px, -50%, 0); }
-    to { transform: translate3d(calc(100vw + 20px), -50%, 0); }
+    from { transform: translate3d(var(--conveyor-start, -180px), -50%, 0); }
+    to { transform: translate3d(var(--conveyor-end, calc(100vw + 20px)), -50%, 0); }
   }
 
   /* AI Orbit emblem — concentric rotating rings + pulse + twinkle */

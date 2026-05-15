@@ -50,10 +50,10 @@ export default function Navbar() {
       }`}
     >
       <nav
-        className={`mx-auto px-4 md:px-6 max-w-[84rem] flex items-center justify-between rounded-2xl transition-[background-color,backdrop-filter,box-shadow,padding,border-color] duration-200 ease-out ${
+        className={`mx-auto px-4 lg:px-6 max-w-[84rem] flex items-center justify-between rounded-2xl transition-[background-color,backdrop-filter,box-shadow,padding,border-color] duration-200 ease-out ${
           scrolled
-            ? 'glass-strong shadow-[0_8px_40px_-12px_rgba(0,0,0,0.6)] py-3 px-4 md:px-6'
-            : 'py-4 px-4 md:px-6'
+            ? 'glass-strong shadow-[0_8px_40px_-12px_rgba(0,0,0,0.6)] py-3 px-4 lg:px-6'
+            : 'py-4 px-4 lg:px-6'
         }`}
       >
         <a href="#top" className="flex items-center gap-2.5 group">
@@ -68,12 +68,12 @@ export default function Navbar() {
           </span>
         </a>
 
-        <ul className="hidden md:flex items-center gap-1">
+        <ul className="hidden lg:flex items-center gap-1">
           {links.map((l) => (
             <li key={l.href}>
               <a
                 href={l.href}
-                className="relative px-4 py-2 text-sm text-slate-300 hover:text-white transition-colors group"
+                className="relative px-4 py-2 text-sm text-slate-300 hover:text-white transition-colors group whitespace-nowrap"
               >
                 {l.label}
                 <span className="absolute left-1/2 -translate-x-1/2 bottom-0 w-0 h-px bg-gradient-to-r from-cyan-400 to-violet-400 group-hover:w-2/3 transition-all duration-300" />
@@ -89,7 +89,7 @@ export default function Navbar() {
           >
             <button
               onClick={() => setVersionsOpen((v) => !v)}
-              className="relative flex items-center gap-1 px-4 py-2 text-sm text-slate-300 hover:text-white transition-colors group"
+              className="relative flex items-center gap-1 px-4 py-2 text-sm text-slate-300 hover:text-white transition-colors group whitespace-nowrap"
             >
               Versions
               <ChevronDown className={`w-3.5 h-3.5 transition-transform ${versionsOpen ? 'rotate-180' : ''}`} />
@@ -133,15 +133,15 @@ export default function Navbar() {
           </li>
         </ul>
 
-        <div className="hidden md:flex items-center gap-3">
-          <a href="#contact" className="btn-primary text-sm py-2.5 px-5">
+        <div className="hidden lg:flex items-center gap-3">
+          <a href="#contact" className="btn-primary text-sm py-2.5 px-5 whitespace-nowrap">
             Book Free Consultation
           </a>
         </div>
 
         <button
           onClick={() => setOpen((v) => !v)}
-          className="md:hidden w-10 h-10 grid place-items-center rounded-xl glass"
+          className="lg:hidden w-10 h-10 grid place-items-center rounded-xl glass"
           aria-label="Menu"
         >
           {open ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -155,7 +155,7 @@ export default function Navbar() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.25 }}
-            className="md:hidden mx-auto px-4 max-w-[84rem] mt-3"
+            className="lg:hidden mx-auto px-4 max-w-[84rem] mt-3"
           >
             <div className="glass-strong rounded-2xl p-2">
               {links.map((l) => (

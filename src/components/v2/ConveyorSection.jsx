@@ -250,6 +250,10 @@ function ClaimCard({ seed, indexOffset, totalWidth }) {
         animation: `conveyorMove ${cycleDuration}s linear infinite`,
         animationDelay: `-${delay}s`,
         willChange: 'transform',
+        // Travel from off-screen-left of conveyor to off-screen-right of conveyor.
+        // Using the measured trackWidth keeps cards inside the conveyor at all viewport sizes.
+        '--conveyor-start': `${-cardWidth - 20}px`,
+        '--conveyor-end': `${totalWidth + 20}px`,
       }}
     >
       <div className="flex items-center justify-between gap-1 mb-1">
