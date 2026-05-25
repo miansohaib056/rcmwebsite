@@ -6,7 +6,8 @@ import Solution from './v2/Solution';
 const AIAgents = lazy(() => import('./v2/AIAgents'));
 const ConveyorSection = lazy(() => import('./v2/ConveyorSection'));
 const Problems = lazy(() => import('./v2/Problems'));
-const Showcase = lazy(() => import('./v2/Showcase'));
+// Hidden for now — keep import path intact so we can re-enable easily:
+// const Showcase = lazy(() => import('./v2/Showcase'));
 const HowItWorks = lazy(() => import('./v2/HowItWorks'));
 const Stats = lazy(() => import('./v2/Stats'));
 const Testimonials = lazy(() => import('./v2/Testimonials'));
@@ -32,9 +33,11 @@ export default function V2Page() {
           <ConveyorSection />
         </div>
         <Problems />
-        <div className="cv-auto">
+        {/* Showcase ("A neural network for revenue.") — hidden for now.
+            Uncomment the lazy import + this block to bring it back. */}
+        {/* <div className="cv-auto">
           <Showcase />
-        </div>
+        </div> */}
         <div className="cv-auto">
           <HowItWorks />
         </div>
